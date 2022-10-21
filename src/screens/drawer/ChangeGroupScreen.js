@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 
-function RegisterScreen() {
+function ChangeGroupScreen() {
   return (
     <View style={styles.container}>
-      <Text>Register!</Text>
+      <Text>Change Groups!</Text>
     </View>
   )
 }
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen
+export default ChangeGroupScreen

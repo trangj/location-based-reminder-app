@@ -1,12 +1,19 @@
-import { useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
-import { View, Text, StatusBar } from 'react-native';
+import { View, Text } from 'react-native';
 import MapView from 'react-native-maps';
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 
 function MainScreen() {
   const bottomSheetRef = useRef(null)
-  const snapPoints = useMemo(() => ['10%', '50%'], []);
+  const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
+  const renderBackdrop = useCallback(props => (
+    <BottomSheetBackdrop
+      {...props}
+      appearsOnIndex={2}
+      disappearsOnIndex={1}
+    />
+  ), [])
 
   return (
     <View style={styles.container}>
@@ -17,7 +24,8 @@ function MainScreen() {
       />
       <BottomSheet
         ref={bottomSheetRef}
-        index={1}
+        backdropComponent={renderBackdrop}
+        index={0}
         snapPoints={snapPoints}
       >
         <View style={styles.contentContainer}>

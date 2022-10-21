@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 
-function RegisterScreen() {
+function SettingsScreen() {
   return (
     <View style={styles.container}>
-      <Text>Register!</Text>
+      <Text>Settings!</Text>
     </View>
   )
 }
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen
+export default SettingsScreen

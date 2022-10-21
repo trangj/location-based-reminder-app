@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
 
-function RegisterScreen() {
+function AddMemberScreen() {
   return (
     <View style={styles.container}>
-      <Text>Register!</Text>
+      <Text>Add Member!</Text>
     </View>
   )
 }
@@ -18,4 +18,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RegisterScreen
+export default AddMemberScreen
