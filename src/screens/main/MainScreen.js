@@ -10,7 +10,11 @@ function MainScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} />
+      <MapView 
+        style={styles.map} 
+        rotateEnabled={false}
+        pitchEnabled={false}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
