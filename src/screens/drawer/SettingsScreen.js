@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Button } from 'native-base'
+import { supabase } from '../../lib/supabase'
 
 function SettingsScreen() {
   return (
     <View style={styles.container}>
-      <Text>Settings!</Text>
+      <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
     </View>
   )
 }
