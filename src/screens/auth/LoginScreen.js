@@ -40,6 +40,7 @@ function LoginScreen() {
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  keyboardType="email-address"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -58,6 +59,7 @@ function LoginScreen() {
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  secureTextEntry
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}

@@ -5,11 +5,13 @@ import RegisterScreen from '../screens/auth/RegisterScreen'
 import DrawerNavigator from './DrawerNavigator'
 import { supabase } from '../lib/supabase'
 import { useEffect, useState } from 'react'
+import { useSessionStore } from '../stores/sessionStore'
 
 const Stack = createNativeStackNavigator()
 
 function AuthNavigator() {
-  const [session, setSession] = useState(null)
+  const session = useSessionStore(state => state.session)
+  const setSession = useSessionStore(state => state.setSession)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

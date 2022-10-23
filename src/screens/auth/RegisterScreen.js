@@ -41,6 +41,7 @@ function RegisterScreen() {
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  keyboardType="email-address"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -59,6 +60,7 @@ function RegisterScreen() {
               rules={{ required: true }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  secureTextEntry
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
@@ -77,6 +79,7 @@ function RegisterScreen() {
               rules={{ required: true, validate: value => value === getValues('password') }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  secureTextEntry
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}

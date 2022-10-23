@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { Button } from 'native-base'
+import { Button, Text } from 'native-base'
 import { supabase } from '../../lib/supabase'
+import { useSessionStore } from '../../stores/sessionStore';
 
 function SettingsScreen() {
+  const user = useSessionStore(state => state.user)
   return (
     <View style={styles.container}>
+      <Text>Signed in as {user.email}</Text>
       <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
     </View>
   )
