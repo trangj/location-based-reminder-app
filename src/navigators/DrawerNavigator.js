@@ -11,8 +11,8 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
   return (
-    <Drawer.Navigator initialRouteName='MainNavigator' screenOptions={{ headerTransparent: true, headerTitle: "" }}>
-      <Drawer.Screen name="MainNavigator" component={MainNavigator} />
+    <Drawer.Navigator initialRouteName='MainNavigator' screenOptions={{ headerTitle: "" }}>
+      <Drawer.Screen name="MainNavigator" component={MainNavigator} options={{headerTransparent: true}} />
       <Drawer.Screen name="ViewGroup" component={ViewGroupScreen} />
       <Drawer.Screen name="ChangeGroup" component={ChangeGroupScreen} />
       <Drawer.Screen name="CreateGroup" component={CreateGroupScreen} />

@@ -1,12 +1,17 @@
+import { FlatList, useToast } from 'native-base';
 import { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { supabase } from '../../lib/supabase';
+import { useGroupStore } from '../../stores/groupStore';
 import { useSessionStore } from '../../stores/sessionStore';
+import ListItem from '../../ui/ListItem';
 
 function ChangeGroupScreen() {
   const [groups, setGroups] = useState([])
   const user = useSessionStore(state => state.user);
+  const setGroup = useGroupStore(state => state.setGroup);
+  const currentGroup = useGroupStore(state => state.group);
+  const toast = useToast()
 
   useEffect(() => {
     async function fetchGroups() {
@@ -15,28 +20,39 @@ function ChangeGroupScreen() {
         .select('group(*)')
         .eq('user_id', user.id)
 
-      setGroups(data)
+      if (error) {
+        toast.show({description: "Failed to fetch groups."})
+      } else {
+        setGroups(data)
+      }
     }
 
     fetchGroups();
-  })
+  }, [])
+
+  function handleGroupChange(group) {
+    if (currentGroup.id !== group.id) {
+      setGroup(group);
+      toast.show({description: "Successfully changed group."})
+    }
+  }
 
   return (
-    <View style={styles.container}>
-      {groups.map(({group}) => (
-        <Text key={group.id}>{group.group_name}</Text>
-      ))}
-    </View>
+      <FlatList 
+        data={groups}
+        renderItem={({item: group}) => (
+          <ListItem 
+            key={group.group.id}
+            onPress={() => handleGroupChange(group.group)}
+            active={currentGroup.id === group.group.id}
+          >
+            <Text>
+              {group.group.group_name}
+            </Text>
+          </ListItem>
+        )}
+      />
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default ChangeGroupScreen

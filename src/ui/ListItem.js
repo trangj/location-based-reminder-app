@@ -1,10 +1,21 @@
+import { Box, Pressable } from 'native-base'
 import React from 'react'
 
-const ListItem = () => {
+const ListItem = ({ children, onPress, active, ...props }) => {
   return (
-    <View>
-      <Text>ListItem</Text>
-    </View>
+    <Pressable onPress={onPress} w="full">
+      {({isPressed}) => (
+        <Box 
+          bg={isPressed || active ? "gray.200" : "white"}
+          w="full"
+          p="2"
+          alignItems="center"
+          {...props}
+        >
+          {children}
+        </Box>
+      )}
+    </Pressable>
   )
 }
 

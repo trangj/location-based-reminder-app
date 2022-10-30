@@ -7,7 +7,7 @@ function ViewGroupScreen() {
 
   return (
     <View style={styles.container}>
-      <Text>{group ? group.group_name : 'Not in a group'}</Text>
+      <Text>Your current group: {group ? group.group_name : 'Not in a group'}</Text>
     </View>
   )
 }
