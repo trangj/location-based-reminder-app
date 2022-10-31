@@ -1,10 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { View, Text } from 'react-native';
+import { useGroupStore } from '../../stores/groupStore';
 
 function ViewGroupScreen() {
+  const group = useGroupStore(state => state.group);
+
   return (
     <View style={styles.container}>
-      <Text>View Groups!</Text>
+      <Text>Your current group: {group ? group.group_name : 'Not in a group'}</Text>
     </View>
   )
 }
