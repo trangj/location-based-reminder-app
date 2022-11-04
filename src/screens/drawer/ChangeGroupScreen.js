@@ -31,10 +31,9 @@ function ChangeGroupScreen() {
   }, [])
 
   function handleGroupChange(group) {
-    if (currentGroup && currentGroup.id !== group.id) {
-      setGroup(group);
-      toast.show({description: "Successfully changed group."})
-    }
+    if (currentGroup && currentGroup.id === group.id) return;
+    setGroup(group);
+    toast.show({description: "Successfully changed group."})
   }
 
   return (
