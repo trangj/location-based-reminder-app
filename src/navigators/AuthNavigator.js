@@ -6,18 +6,33 @@ import DrawerNavigator from './DrawerNavigator'
 import { supabase } from '../lib/supabase'
 import { useEffect, useState } from 'react'
 import { useSessionStore } from '../stores/sessionStore'
+import { useMarkerStore } from '../stores/markerStore'
+import { useGroupStore } from '../stores/groupStore'
 
 const Stack = createNativeStackNavigator()
 
 function AuthNavigator() {
   const session = useSessionStore(state => state.session)
   const setSession = useSessionStore(state => state.setSession)
+  const setMarkers = useMarkerStore(state => state.setMarkers)
+  const group = useGroupStore(state => state.group);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+    async function fetchSession() {
+      const { session } = await supabase.auth.getSession();
+      setSession(session);
 
+      if (group) {
+        const {data, error} = await supabase
+          .from('marker')
+          .select('*')
+          .eq('group_id', group.id)
+
+        setMarkers(data);
+      }
+    }
+
+    fetchSession();
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
