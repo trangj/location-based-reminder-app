@@ -31,7 +31,7 @@ function ChangeGroupScreen() {
   }, [])
 
   function handleGroupChange(group) {
-    if (currentGroup.id !== group.id) {
+    if (currentGroup && currentGroup.id !== group.id) {
       setGroup(group);
       toast.show({description: "Successfully changed group."})
     }
@@ -44,7 +44,7 @@ function ChangeGroupScreen() {
           <ListItem 
             key={group.group.id}
             onPress={() => handleGroupChange(group.group)}
-            active={currentGroup.id === group.group.id}
+            active={currentGroup && currentGroup.id === group.group.id}
           >
             <Text>
               {group.group.group_name}
