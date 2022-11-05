@@ -19,8 +19,8 @@ function AuthNavigator() {
 
   useEffect(() => {
     async function fetchSession() {
-      const { session } = await supabase.auth.getSession();
-      setSession(session);
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
 
       if (group) {
         const {data, error} = await supabase

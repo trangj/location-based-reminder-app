@@ -1,18 +1,27 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Alert, Dimensions, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
 import { useMarkerStore } from '../../stores/markerStore';
 import ListItem from '../../ui/ListItem';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
 import { useState } from 'react';
-import { Text } from 'native-base';
+import { Button, FormControl, HStack, Input, KeyboardAvoidingView, Text, useToast, VStack } from 'native-base';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 
 function MainScreen() {
+  // navigation
+  const navigation = useNavigation()
+
+  // toast
+  const toast = useToast()
+
   // stores
   const markers = useMarkerStore(state => state.markers)
+  const setMarkers = useMarkerStore(state => state.setMarkers)
   const group = useGroupStore(state => state.group)
 
   // mapview
@@ -22,7 +31,7 @@ function MainScreen() {
   const [view, setView] = useState("list")
   const [newMarker, setNewMarker] = useState(null)
   const bottomSheetRef = useRef(null)
-  const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
+  const snapPoints = useMemo(() => ['10%', '35%', '100%'], []);
   const renderBackdrop = useCallback(props => (
     <BottomSheetBackdrop
       {...props}
@@ -32,18 +41,12 @@ function MainScreen() {
   ), [])
 
   // handling actions
-  async function addMarker(nativeEvent) {
-    const {data, error} = supabase.from('marker').insert([
-      {group_id: group.id, }
-    ])
-  }
-
   function handleLongPress({nativeEvent}) {
     mapRef.current.animateToRegion({
       latitude: nativeEvent.coordinate.latitude,
       longitude: nativeEvent.coordinate.longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02
     })
     setView("add")
     setNewMarker({
@@ -51,6 +54,32 @@ function MainScreen() {
       title: 'New Marker'
     })
   }
+
+  async function onSubmit({ markerName }) {
+    const {data, error} = await supabase.from('marker').insert([
+      { 
+        group_id: group.id, 
+        latitude: newMarker.coordinate.latitude,
+        longitude: newMarker.coordinate.longitude,
+        name: markerName
+      }
+    ]).select();
+
+    if (error) {
+      Alert.alert("Failed to add marker.")
+    } else {
+      setMarkers([...markers, ...data])
+      toast.show({description: "Successfully added marker."})
+      setView("list");
+    }
+  }
+
+  // marker form
+  const { control, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      markerName: '',
+    }
+  });
 
   return (
     <View style={styles.container}>
@@ -60,14 +89,14 @@ function MainScreen() {
         rotateEnabled={false}
         pitchEnabled={false}
         onLongPress={handleLongPress}
+        onPress={() => view === "add" && setView("list")}
       >
         {
           markers.map((marker, index) => (
             <Marker
               key={index}
-              coordinate={marker.latlng}
-              title={marker.title}
-              description={marker.description}
+              coordinate={{ latitude: marker.latitude, longitude: marker.longitude }}
+              title={marker.name}
             />
           ))
         }
@@ -76,7 +105,7 @@ function MainScreen() {
             <Marker
               coordinate={newMarker.coordinate}
               title={newMarker.title}
-              description={newMarker.description}
+              pinColor="#00FF00"
             />
           )
         }
@@ -84,25 +113,64 @@ function MainScreen() {
       <BottomSheet
         ref={bottomSheetRef}
         backdropComponent={renderBackdrop}
-        index={0}
+        index={1}
         snapPoints={snapPoints}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
       >
         {
           view === "list" ? (
             <BottomSheetFlatList
               data={markers}
-              keyExtractor={(i) => i}
+              keyExtractor={(marker) => marker.id}
               renderItem={({item}) => (
-                <ListItem>
+                <ListItem
+                  onPress={() => 
+                    mapRef.current.animateToRegion({
+                      latitude: item.latitude,
+                      longitude: item.longitude,
+                      latitudeDelta: 0.02,
+                      longitudeDelta: 0.02
+                    })
+                  }
+                  onLongPress={() => navigation.navigate("MarkerDetails")}
+                >
                   <Text>
-                    Test
+                    {item.name}
                   </Text>
                 </ListItem>
               )}
-              contentContainerStyle={styles.contentContainer}
             />
           ) : (
-            <Text>{JSON.stringify(newMarker)}</Text>
+            <VStack p="3">
+              <Text fontSize="2xl" >Add Marker</Text>
+              <FormControl isInvalid={errors.markerName}>
+                <FormControl.Label>Marker Name</FormControl.Label>
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="markerName"
+                />
+                <FormControl.ErrorMessage>
+                  Marker name is required.
+                </FormControl.ErrorMessage>
+              </FormControl>
+              <VStack space="2" pt="2">
+                <Button onPress={() => setView("list")} variant="ghost">
+                  Exit
+                </Button>
+                <Button onPress={handleSubmit(onSubmit)}>
+                  Add Marker
+                </Button>
+              </VStack>
+            </VStack>
           )
         }
       </BottomSheet>
@@ -120,11 +188,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
-  },
+  }
 });
 
 export default MainScreen
