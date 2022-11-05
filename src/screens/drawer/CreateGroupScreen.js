@@ -47,7 +47,7 @@ function CreateGroupScreen() {
       <ScrollView>
         <VStack space="4" mt="16" p="4">
           <Text fontSize="2xl" >Create Group</Text>
-          <FormControl isInvalid={errors.email}>
+          <FormControl isInvalid={errors.groupName}>
             <FormControl.Label>Group Name</FormControl.Label>
             <Controller
               control={control}

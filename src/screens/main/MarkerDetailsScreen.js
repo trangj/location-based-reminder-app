@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 function MarkerDetailsScreen() {
   return (
     <View style={styles.container}>
-      <Text>View Groups!</Text>
+      <Text>Marker details / reminders screen</Text>
     </View>
   )
 }
