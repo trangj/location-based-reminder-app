@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator()
 
 function MainNavigator() {
   return (
-    <Stack.Navigator screenOptions={{ header: () => null }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Main' component={MainScreen} />
       <Stack.Screen name='MarkerDetails' component={MarkerDetailsScreen} />
       <Stack.Screen name='AddReminder' component={AddReminderScreen} />

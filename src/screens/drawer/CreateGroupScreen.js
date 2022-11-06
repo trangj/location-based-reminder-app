@@ -1,16 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import { Button, FormControl, Input, ScrollView, Text, VStack } from 'native-base';
+import { Button, FormControl, Input, KeyboardAvoidingView, ScrollView, Text, VStack } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { useSessionStore } from '../../stores/sessionStore';
 import { useGroupStore } from '../../stores/groupStore';
+import { useMarkerStore } from '../../stores/markerStore';
 
 
 function CreateGroupScreen() {
   const navigation = useNavigation()
   const user = useSessionStore(state => state.user)
   const setGroup = useGroupStore(state => state.setGroup)
+  const setMarkers = useMarkerStore(state => state.setMarkers)
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -34,6 +36,7 @@ function CreateGroupScreen() {
     ])
 
     setGroup(groupData[0])
+    setMarkers([]);
 
     if (error || groupError) {
       Alert.alert(error.message)
@@ -67,11 +70,13 @@ function CreateGroupScreen() {
           </FormControl>
         </VStack>
       </ScrollView>
-      <VStack mt="auto" space="2" p="4">
-        <Button onPress={handleSubmit(onSubmit)}>
-          Create Group
-        </Button>
-      </VStack>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={100}>
+        <VStack mt="auto" space="2" p="4">
+          <Button onPress={handleSubmit(onSubmit)}>
+            Create Group
+          </Button>
+        </VStack>
+      </KeyboardAvoidingView>
     </VStack>
   )
 }

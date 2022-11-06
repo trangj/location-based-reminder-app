@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
-import { VStack, Button, Input, Text, FormControl } from 'native-base'
+import { VStack, Button, Input, Text, FormControl, KeyboardAvoidingView } from 'native-base'
 import { useForm, Controller } from "react-hook-form";
-import { ScrollView } from 'react-native';
+import { Platform, ScrollView } from 'react-native';
 import { Alert } from 'react-native';
 import { supabase } from '../../lib/supabase'
 
@@ -93,14 +93,16 @@ function RegisterScreen() {
           </FormControl>
         </VStack>
       </ScrollView>
-      <VStack mt="auto" space="2" p="4">
-        <Button onPress={() => navigation.navigate("Login")} variant="ghost">
-          Already have an account?
-        </Button>
-        <Button onPress={handleSubmit(onSubmit)}>
-          Register
-        </Button>
-      </VStack>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={50}>
+        <VStack mt="auto" space="2" p="4">
+          <Button onPress={() => navigation.navigate("Login")} variant="ghost">
+            Already have an account?
+          </Button>
+          <Button onPress={handleSubmit(onSubmit)}>
+            Register
+          </Button>
+        </VStack>
+      </KeyboardAvoidingView>
     </VStack>
   )
 }

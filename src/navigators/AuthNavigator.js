@@ -39,7 +39,7 @@ function AuthNavigator() {
   }, [])
 
   return (
-    <Stack.Navigator screenOptions={{ header: () => null }}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       {session && session.user ? (
         <Stack.Screen name='DrawerNavigator' component={DrawerNavigator} />
       ) : (

@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useRef } from 'react';
 import { Alert, Dimensions, StyleSheet } from 'react-native';
-import { View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList, BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useMarkerStore } from '../../stores/markerStore';
 import ListItem from '../../ui/ListItem';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
 import { useState } from 'react';
-import { Button, FormControl, HStack, Input, KeyboardAvoidingView, Text, useToast, VStack } from 'native-base';
+import { Button, FormControl, Text, useToast, VStack } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
+import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper';
 
 function MainScreen() {
   // navigation
@@ -82,7 +82,7 @@ function MainScreen() {
   });
 
   return (
-    <View style={styles.container}>
+    <>
       <MapView 
         ref={mapRef}
         style={styles.map} 
@@ -115,7 +115,7 @@ function MainScreen() {
         backdropComponent={renderBackdrop}
         index={1}
         snapPoints={snapPoints}
-        keyboardBehavior="interactive"
+        keyboardBehavior="extend"
         keyboardBlurBehavior="restore"
       >
         {
@@ -150,7 +150,7 @@ function MainScreen() {
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { onChange, onBlur, value } }) => (
-                    <Input
+                    <BottomSheetInputWrapper
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
@@ -174,7 +174,7 @@ function MainScreen() {
           )
         }
       </BottomSheet>
-    </View>
+    </>
   )
 }
 
