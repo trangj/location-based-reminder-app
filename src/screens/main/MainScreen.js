@@ -133,7 +133,7 @@ function MainScreen() {
                       longitudeDelta: 0.02
                     })
                   }
-                  onLongPress={() => navigation.navigate("MarkerDetails")}
+                  onLongPress={() => navigation.navigate("MarkerDetails", {markerId: item.id})}
                 >
                   <Text>
                     {item.name}
