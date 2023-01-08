@@ -90,6 +90,7 @@ function MainScreen() {
         pitchEnabled={false}
         onLongPress={handleLongPress}
         onPress={() => view === "add" && setView("list")}
+        showsUserLocation
       >
         {
           markers.map((marker, index) => (
