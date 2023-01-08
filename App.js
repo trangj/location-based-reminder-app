@@ -4,25 +4,50 @@ import AuthNavigator from './src/navigators/AuthNavigator'
 import { NativeBaseProvider } from "native-base";
 import { Alert, SafeAreaView, StatusBar } from 'react-native';
 import { supabase } from './src/lib/supabase'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useMarkerStore } from './src/stores/markerStore'
 import { useGroupStore } from './src/stores/groupStore'
 import { useSessionStore } from './src/stores/sessionStore'
 import * as Location from 'expo-location'
+import * as TaskManager from 'expo-task-manager';
 
+TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error }) => {
+  if (error) {
+    // check `error.message` for more details.
+    return;
+  }
+  if (eventType === Location.GeofencingEventType.Enter) {
+    Alert.alert("You have arrived at one of your markers!")
+    console.log("You've entered region:", region);
+  } else if (eventType === Location.GeofencingEventType.Exit) {
+    console.log("You've left region:", region);
+  }
+});
 
 export default function App() {
   const setSession = useSessionStore(state => state.setSession)
   const setMarkers = useMarkerStore(state => state.setMarkers)
+  const markers = useMarkerStore(state => state.markers)
   const group = useGroupStore(state => state.group);
+  const [status, setStatus] = useState(false)
 
-  // handle authentication on app load
   useEffect(() => {
-    async function fetchSession() {
+    // get permission for user's location
+    (async () => {
+      let {status: foregroundStatus} = await Location.requestForegroundPermissionsAsync();
+      let {status: backgroundStatus} = await Location.requestBackgroundPermissionsAsync();
+      const combinedStatus = foregroundStatus === 'granted' && backgroundStatus == 'granted'
+      setStatus(combinedStatus);
+      if (!combinedStatus) {
+        Alert.alert('Permission for location was denied', "Please enable location for this app to obtain the full experience.");
+        return;
+      }
+    })();
+
+    // handle authentication on app load
+    (async () => {
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
-
-      setMarkers([])
 
       if (group) {
         const {data, error} = await supabase
@@ -32,24 +57,25 @@ export default function App() {
 
         setMarkers(data);
       }
-    }
+    })();
 
-    fetchSession();
+    // clear session when user logs out
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
   }, [])
 
-  // get permission for user's location
+  // update geofenced markers when user changes groups i.e loads new markers
   useEffect(() => {
-    (async () => {
-      let {status} = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission for location was denied', "Please enable location for this app to obtain the full experience.");
-        return;
-      }
-    })()
-  }, [])
+    if (!status || markers.length === 0) return;
+
+    const markerRegion = markers.map(marker => ({
+      ...marker,
+      radius: 10
+    }))
+
+    Location.startGeofencingAsync("MARKER_GEOFENCE", markerRegion);
+  }, [markers, status])
 
   return (
     <SafeAreaView
