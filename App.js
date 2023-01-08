@@ -10,17 +10,35 @@ import { useGroupStore } from './src/stores/groupStore'
 import { useSessionStore } from './src/stores/sessionStore'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager';
+import * as Notifications from 'expo-notifications'
 
+// define notification settings
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
+
+// send notifications when user enters a marker
 TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error }) => {
   if (error) {
     // check `error.message` for more details.
     return;
   }
+  
   if (eventType === Location.GeofencingEventType.Enter) {
-    Alert.alert("You have arrived at one of your markers!")
-    console.log("You've entered region:", region);
-  } else if (eventType === Location.GeofencingEventType.Exit) {
-    console.log("You've left region:", region);
+    const schedulingOptions = {
+      content: {
+        title: 'You have arrived at a marker',
+        body: 'Check the app to see your reminders for this marker.',
+        sound: true,
+      },
+      trigger: null,
+    };
+    Notifications.scheduleNotificationAsync(schedulingOptions);
   }
 });
 
@@ -29,18 +47,22 @@ export default function App() {
   const setMarkers = useMarkerStore(state => state.setMarkers)
   const markers = useMarkerStore(state => state.markers)
   const group = useGroupStore(state => state.group);
-  const [status, setStatus] = useState(false)
+  const [locationStatus, setLocationStatus] = useState(false)
 
   useEffect(() => {
-    // get permission for user's location
+    // get permission for user's location and to send notifications
     (async () => {
       let {status: foregroundStatus} = await Location.requestForegroundPermissionsAsync();
       let {status: backgroundStatus} = await Location.requestBackgroundPermissionsAsync();
-      const combinedStatus = foregroundStatus === 'granted' && backgroundStatus == 'granted'
-      setStatus(combinedStatus);
+      const combinedStatus = foregroundStatus === 'granted' && backgroundStatus === 'granted'
+      setLocationStatus(combinedStatus);
       if (!combinedStatus) {
         Alert.alert('Permission for location was denied', "Please enable location for this app to obtain the full experience.");
-        return;
+      }
+
+      let {status: notificationStatus} = await Notifications.requestPermissionsAsync();
+      if (!notificationStatus) {
+        Alert.alert('Permission for notifications was denied', "You will not recieve notifications when arriving at markers.");
       }
     })();
 
@@ -67,7 +89,7 @@ export default function App() {
 
   // update geofenced markers when user changes groups i.e loads new markers
   useEffect(() => {
-    if (!status || markers.length === 0) return;
+    if (!locationStatus || markers.length === 0) return;
 
     const markerRegion = markers.map(marker => ({
       ...marker,
@@ -75,7 +97,7 @@ export default function App() {
     }))
 
     Location.startGeofencingAsync("MARKER_GEOFENCE", markerRegion);
-  }, [markers, status])
+  }, [markers, locationStatus])
 
   return (
     <SafeAreaView
