@@ -2,12 +2,13 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './src/navigators/AuthNavigator'
 import { NativeBaseProvider } from "native-base";
-import { SafeAreaView, StatusBar } from 'react-native';
+import { Alert, SafeAreaView, StatusBar } from 'react-native';
 import { supabase } from './src/lib/supabase'
 import { useEffect } from 'react'
 import { useMarkerStore } from './src/stores/markerStore'
 import { useGroupStore } from './src/stores/groupStore'
 import { useSessionStore } from './src/stores/sessionStore'
+import * as Location from 'expo-location'
 
 
 export default function App() {
@@ -37,6 +38,17 @@ export default function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
     })
+  }, [])
+
+  // get permission for user's location
+  useEffect(() => {
+    (async () => {
+      let {status} = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission for location was denied', "Please enable location for this app to obtain the full experience.");
+        return;
+      }
+    })()
   }, [])
 
   return (
