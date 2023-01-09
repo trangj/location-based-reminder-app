@@ -5,14 +5,11 @@ import { Alert, Platform } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { useSessionStore } from '../../stores/sessionStore';
 import { useGroupStore } from '../../stores/groupStore';
-import { useMarkerStore } from '../../stores/markerStore';
-
 
 function CreateGroupScreen() {
   const navigation = useNavigation()
   const user = useSessionStore(state => state.user)
   const setGroup = useGroupStore(state => state.setGroup)
-  const setMarkers = useMarkerStore(state => state.setMarkers)
 
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: {
@@ -36,7 +33,6 @@ function CreateGroupScreen() {
     ])
 
     setGroup(groupData[0])
-    setMarkers([]);
 
     if (error || groupError) {
       Alert.alert(error.message)

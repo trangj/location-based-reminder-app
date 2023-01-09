@@ -70,15 +70,6 @@ export default function App() {
     (async () => {
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
-
-      if (group) {
-        const {data, error} = await supabase
-          .from('marker')
-          .select('*')
-          .eq('group_id', group.id)
-
-        setMarkers(data);
-      }
     })();
 
     // clear session when user logs out
@@ -87,13 +78,27 @@ export default function App() {
     })
   }, [])
 
+  // update markers depending on group
+  useEffect(() => {
+    (async () => {
+      if (!group) return;
+
+      const {data, error} = await supabase
+          .from('marker')
+          .select('*')
+          .eq('group_id', group.id)
+
+      setMarkers(data);
+    })();
+  }, [group])
+
   // update geofenced markers when user changes groups i.e loads new markers
   useEffect(() => {
     if (!locationStatus || markers.length === 0) return;
 
     const markerRegion = markers.map(marker => ({
       ...marker,
-      radius: 10
+      radius: 50
     }))
 
     Location.startGeofencingAsync("MARKER_GEOFENCE", markerRegion);

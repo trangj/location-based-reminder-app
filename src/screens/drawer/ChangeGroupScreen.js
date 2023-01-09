@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
-import { useMarkerStore } from '../../stores/markerStore';
 import { useSessionStore } from '../../stores/sessionStore';
 import ListItem from '../../ui/ListItem';
 
@@ -12,7 +11,6 @@ function ChangeGroupScreen() {
   const user = useSessionStore(state => state.user);
   const setGroup = useGroupStore(state => state.setGroup);
   const currentGroup = useGroupStore(state => state.group);
-  const setMarkers = useMarkerStore(state => state.setMarkers)
   const toast = useToast()
 
   useEffect(() => {
@@ -34,15 +32,7 @@ function ChangeGroupScreen() {
 
   async function handleGroupChange(group) {
     if (currentGroup && currentGroup.id === group.id) return;
-
     setGroup(group);
-    const {data} = await supabase
-          .from('marker')
-          .select('*')
-          .eq('group_id', group.id)
-
-    setMarkers(data);
-
     toast.show({description: "Successfully changed group."})
   }
 
