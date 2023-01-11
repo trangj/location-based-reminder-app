@@ -1,14 +1,17 @@
-import { Box, Button, Checkbox, CloseIcon, IconButton, Text } from 'native-base';
+import { Button, Checkbox, CloseIcon, IconButton, Text, VStack } from 'native-base';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { FlatList } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { useRemindersStore } from '../../stores/reminderStore';
+import { useMarkerStore } from '../../stores/markerStore';
 import ListItem from '../../ui/ListItem';
 
 function MarkerDetailsScreen({ route, navigation }) {
   const reminders = useRemindersStore(state => state.reminders);
   const setReminders = useRemindersStore(state => state.setReminders);
+  const markers = useMarkerStore(state => state.markers);
+  const setMarkers = useMarkerStore(state => state.setMarkers);
 
   useEffect(() => {
     async function fetchReminders() {
@@ -49,6 +52,18 @@ function MarkerDetailsScreen({ route, navigation }) {
     }
   }
 
+  async function deleteMarker() {
+    const { error: reminderError } = await supabase.from('reminder').delete().match({ marker_id: route.params.markerId })
+    const { error } = await supabase.from('marker').delete().match({ id: route.params.markerId })
+
+    if (error || reminderError) {
+      Alert.alert(error.message)
+    } else {
+      setMarkers(markers.filter(marker => marker.id !== route.params.markerId));
+      navigation.navigate("Main")
+    }
+  }
+
   return (
     <>
       <FlatList
@@ -73,16 +88,23 @@ function MarkerDetailsScreen({ route, navigation }) {
           </ListItem>
         )}
       />
-      <Box
+      <VStack
         bg="white"
-        p="3"
+        p="4"
+        space="2"
       >
         <Button
           onPress={() => navigation.navigate("AddReminder", {markerId: route.params.markerId})}
         >
           Add Reminder
         </Button>
-      </Box>
+        <Button
+          colorScheme='error'
+          onPress={() => deleteMarker()}
+        >
+          Delete Marker
+        </Button>
+      </VStack>
     </>
   )
 }
