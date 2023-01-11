@@ -6,12 +6,13 @@ import { useMarkerStore } from '../../stores/markerStore';
 import ListItem from '../../ui/ListItem';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, FormControl, Text, useToast, VStack } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper';
 
+import * as Location from 'expo-location';
 function MainScreen() {
   // navigation
   const navigation = useNavigation()
@@ -54,6 +55,27 @@ function MainScreen() {
       title: 'New Marker'
     })
   }
+//set the mapview to the location of the user at the start of the app
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+      let initialLocation = await Location.getCurrentPositionAsync({});
+      mapRef.current.animateToRegion({
+        latitude: initialLocation.coords.latitude,
+        longitude: initialLocation.coords.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05
+      })
+    })();
+  }, []);
+
+
+  
 
   async function onSubmit({ markerName }) {
     const {data, error} = await supabase.from('marker').insert([
@@ -80,6 +102,7 @@ function MainScreen() {
       markerName: '',
     }
   });
+  
 
   return (
     <>
@@ -88,6 +111,7 @@ function MainScreen() {
         style={styles.map} 
         rotateEnabled={false}
         pitchEnabled={false}
+        
         onLongPress={handleLongPress}
         onPress={() => view === "add" && setView("list")}
         showsUserLocation
