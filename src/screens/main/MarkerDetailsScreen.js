@@ -70,18 +70,18 @@ function MarkerDetailsScreen({ route, navigation }) {
         data={reminders}
         keyExtractor={(reminder) => reminder.id}
         renderItem={({item: reminder}) => (
-          <ListItem
-            justifyContent="space-between"
-          >
+          <ListItem>
             <Checkbox
               isChecked={!!reminder.completed_at}
               accessibilityLabel="Reminder completion status"
               onChange={checked => changeReminderStatus(reminder.id, checked)}
+              mr="4"
             />
             <Text>
               {reminder.description}
             </Text>
             <IconButton 
+              ml="auto"
               icon={<CloseIcon/>}
               onPress={() => deleteReminder(reminder.id)}
             />
