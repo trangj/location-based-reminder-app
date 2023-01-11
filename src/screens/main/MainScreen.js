@@ -32,7 +32,7 @@ function MainScreen() {
   const [newMarker, setNewMarker] = useState(null)
   const bottomSheetFlatListRef = useRef(null)
   const bottomSheetAddMarkerRef = useRef(null)
-  const snapPoints = useMemo(() => ['10%', '35%', '100%'], []);
+  const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
   const renderBackdrop = useCallback(props => (
     <BottomSheetBackdrop
       {...props}

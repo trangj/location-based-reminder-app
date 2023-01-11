@@ -11,6 +11,7 @@ import { useSessionStore } from './src/stores/sessionStore'
 import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications'
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 // define notification settings
 Notifications.setNotificationHandler({
@@ -105,18 +106,13 @@ export default function App() {
   }, [markers, locationStatus])
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: '#000'
-      }}
-    >
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NativeBaseProvider>
         <NavigationContainer>
           <AuthNavigator />
           <StatusBar />
         </NavigationContainer>
       </NativeBaseProvider>
-    </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }

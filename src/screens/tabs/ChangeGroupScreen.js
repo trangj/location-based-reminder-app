@@ -1,6 +1,5 @@
-import { FlatList, useToast } from 'native-base';
+import { FlatList, useToast, Text } from 'native-base';
 import { useEffect, useState } from 'react';
-import { Text } from 'react-native';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
 import { useSessionStore } from '../../stores/sessionStore';
@@ -45,7 +44,7 @@ function ChangeGroupScreen() {
             onPress={() => handleGroupChange(group.group)}
             active={currentGroup && currentGroup.id === group.group.id}
           >
-            <Text>
+            <Text fontSize="md" p="1">
               {group.group.group_name}
             </Text>
           </ListItem>
