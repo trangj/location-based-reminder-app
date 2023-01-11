@@ -9,7 +9,6 @@ const ListItem = ({ children, onPress, onLongPress, active, ...props }) => {
           bg={isPressed || active ? "gray.200" : "white"}
           w="full"
           p="2"
-          justifyContent="center"
           alignItems="center"
           flexDirection="row"
           {...props}
