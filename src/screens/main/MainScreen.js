@@ -184,6 +184,7 @@ function MainScreen() {
           snapPoints={snapPoints}
           keyboardBehavior="extend"
           keyboardBlurBehavior="restore"
+          enablePanDownToClose={false}
         >
           <VStack p="2">
           <Text fontSize="xl" fontWeight="bold">Add Marker</Text>
@@ -222,12 +223,6 @@ function MainScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
