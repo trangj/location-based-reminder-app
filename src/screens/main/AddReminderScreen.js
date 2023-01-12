@@ -36,10 +36,9 @@ function AddReminderScreen({ route, navigation }) {
   }
 
   return (
-    <VStack h="full">
+    <VStack h="full" bgColor="white">
       <ScrollView>
-        <VStack space="4" mt="16" p="4">
-          <Text fontSize="2xl" >Add Reminder</Text>
+        <VStack space="4" p="4">
           <FormControl isInvalid={errors.description}>
             <FormControl.Label>Description</FormControl.Label>
             <Controller

@@ -173,11 +173,16 @@ function MainScreen() {
                 onLongPress={() => navigation.navigate("MarkerDetails", {markerId: item.id})}
                 justifyContent="space-between"
               >
+                <VStack>
+                  <Text>
+                    {item.name}
+                  </Text>
+                  <Text fontSize="xs" color="gray.500">
+                    {dayjs(item.created_at).format('DD-MM-YYYY')}
+                  </Text>
+                </VStack>
                 <Text>
-                  {item.name}
-                </Text>
-                <Text>
-                  {dayjs(item.created_at).format('DD-MM-YYYY')}
+                  {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
                 </Text>
               </ListItem>
             )}

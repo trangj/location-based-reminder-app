@@ -6,6 +6,7 @@ import { supabase } from '../../lib/supabase';
 import { useRemindersStore } from '../../stores/reminderStore';
 import { useMarkerStore } from '../../stores/markerStore';
 import ListItem from '../../ui/ListItem';
+import dayjs from 'dayjs';
 
 function MarkerDetailsScreen({ route, navigation }) {
   const reminders = useRemindersStore(state => state.reminders);
@@ -77,9 +78,14 @@ function MarkerDetailsScreen({ route, navigation }) {
               onChange={checked => changeReminderStatus(reminder.id, checked)}
               mr="4"
             />
-            <Text>
-              {reminder.description}
-            </Text>
+            <VStack>
+              <Text>
+                {reminder.description}
+              </Text>
+              <Text fontSize="xs" color="gray.500">
+                {dayjs(reminder.created_at).format('DD-MM-YYYY')}
+              </Text>
+            </VStack>
             <IconButton 
               ml="auto"
               icon={<CloseIcon/>}
