@@ -1,4 +1,5 @@
-import { FlatList, useToast, Text, Divider } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+import { FlatList, useToast, Text, Divider, VStack, Button } from 'native-base';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
@@ -10,6 +11,7 @@ function ChangeGroupScreen() {
   const user = useSessionStore(state => state.user);
   const setGroup = useGroupStore(state => state.setGroup);
   const currentGroup = useGroupStore(state => state.group);
+  const navigation = useNavigation();
   const toast = useToast()
 
   useEffect(() => {
@@ -36,15 +38,16 @@ function ChangeGroupScreen() {
   }
 
   return (
+    <>
       <FlatList 
         data={groups}
         ItemSeparatorComponent={() => (<Divider />)}
         renderItem={({item: group}) => (
           <ListItem 
-            key={group.group.id}
-            onPress={() => handleGroupChange(group.group)}
-            active={currentGroup && currentGroup.id === group.group.id}
-            justifyContent="space-between"
+          key={group.group.id}
+          onPress={() => handleGroupChange(group.group)}
+          active={currentGroup && currentGroup.id === group.group.id}
+          justifyContent="space-between"
           >
             <Text p="1">
               {group.group.group_name}
@@ -55,6 +58,14 @@ function ChangeGroupScreen() {
           </ListItem>
         )}
       />
+      <VStack mt="auto" space="2" p="4" bgColor="white">
+        <Button
+          onPress={() => navigation.navigate('CreateGroup')}
+        >
+          Create Group
+        </Button>
+      </VStack>
+    </>
   )
 }
 
