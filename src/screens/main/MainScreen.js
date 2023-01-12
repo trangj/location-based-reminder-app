@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper';
 
 import * as Location from 'expo-location';
+import dayjs from 'dayjs';
 function MainScreen() {
   // navigation
   const navigation = useNavigation()
@@ -154,7 +155,7 @@ function MainScreen() {
         >
           <BottomSheetFlatList
             ListHeaderComponent={() => (
-              <Text fontSize="xl" p="2" fontWeight="bold">Markers</Text>
+              <Text fontSize="2xl" p="2" fontWeight="bold">Markers</Text>
             )}
             data={markers}
             keyExtractor={(marker) => marker.id}
@@ -169,9 +170,13 @@ function MainScreen() {
                   })
                 }
                 onLongPress={() => navigation.navigate("MarkerDetails", {markerId: item.id})}
+                justifyContent="space-between"
               >
                 <Text>
                   {item.name}
+                </Text>
+                <Text>
+                  {dayjs(item.created_at).format('DD-MM-YYYY')}
                 </Text>
               </ListItem>
             )}
@@ -187,7 +192,7 @@ function MainScreen() {
           enablePanDownToClose={false}
         >
           <VStack p="2">
-          <Text fontSize="xl" fontWeight="bold">Add Marker</Text>
+          <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
             <FormControl isInvalid={errors.markerName}>
               <FormControl.Label>Marker Name</FormControl.Label>
               <Controller

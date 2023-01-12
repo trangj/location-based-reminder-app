@@ -12,6 +12,10 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import dayjs from 'dayjs'
+
+// date formater setup
+dayjs().format()
 
 // define notification settings
 Notifications.setNotificationHandler({

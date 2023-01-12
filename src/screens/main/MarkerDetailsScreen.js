@@ -99,7 +99,7 @@ function MarkerDetailsScreen({ route, navigation }) {
           Add Reminder
         </Button>
         <Button
-          colorScheme='error'
+          colorScheme='danger'
           onPress={() => deleteMarker()}
         >
           Delete Marker
