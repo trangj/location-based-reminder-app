@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useGroupStore } from '../../stores/groupStore';
-import { Text, FlatList, VStack, Button } from 'native-base';
+import { Text, FlatList, VStack, Button, Divider } from 'native-base';
 import { supabase } from '../../lib/supabase';
 import ListItem from '../../ui/ListItem';
 import { useNavigation } from '@react-navigation/native';
@@ -31,11 +31,12 @@ function ViewGroupScreen() {
     <>
       <FlatList 
         data={members}
+        ItemSeparatorComponent={() => (<Divider />)}
         renderItem={({item: member}) => (
           <ListItem 
             key={member.profiles.id}
           >
-            <Text fontSize="md" p="1">
+            <Text p="1">
               {member.profiles.email}
             </Text>
           </ListItem>

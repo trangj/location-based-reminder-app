@@ -1,4 +1,4 @@
-import { FlatList, useToast, Text } from 'native-base';
+import { FlatList, useToast, Text, Divider } from 'native-base';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
@@ -38,14 +38,19 @@ function ChangeGroupScreen() {
   return (
       <FlatList 
         data={groups}
+        ItemSeparatorComponent={() => (<Divider />)}
         renderItem={({item: group}) => (
           <ListItem 
             key={group.group.id}
             onPress={() => handleGroupChange(group.group)}
             active={currentGroup && currentGroup.id === group.group.id}
+            justifyContent="space-between"
           >
-            <Text fontSize="md" p="1">
+            <Text p="1">
               {group.group.group_name}
+            </Text>
+            <Text>
+              {group.group.number_of_members} Member{group.group.number_of_members === 1 ? '' : 's'}
             </Text>
           </ListItem>
         )}

@@ -7,7 +7,7 @@ import ListItem from '../../ui/ListItem';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
 import { useEffect, useState } from 'react';
-import { Button, FormControl, Text, useToast, VStack } from 'native-base';
+import { Button, Divider, FormControl, Text, useToast, VStack } from 'native-base';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper';
@@ -159,6 +159,7 @@ function MainScreen() {
             )}
             data={markers}
             keyExtractor={(marker) => marker.id}
+            ItemSeparatorComponent={() => (<Divider />)}
             renderItem={({item}) => (
               <ListItem
                 onPress={() => 

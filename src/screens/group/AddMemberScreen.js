@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native"
 import { Button, FormControl, Input, KeyboardAvoidingView, ScrollView, VStack } from "native-base"
 import { Controller, useForm } from "react-hook-form"
+import { Alert } from "react-native"
 import { supabase } from "../../lib/supabase"
 import { useGroupStore } from "../../stores/groupStore"
 
