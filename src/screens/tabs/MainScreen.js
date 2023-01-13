@@ -9,10 +9,12 @@ import BottomSheetMarkerList from '../../components/BottomSheetMarkerList';
 import BottomSheetAddMarker from '../../components/BottomSheetAddMarker';
 import BottomSheetReminderList from '../../components/BottomSheetReminderList';
 import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
+import { useGroupStore } from '../../stores/groupStore';
 
 function MainScreen() {
   // stores
   const markers = useMarkerStore(state => state.markers)
+  const group = useGroupStore(state => state.group);
 
   // mapview
   const mapRef = useRef()
@@ -75,6 +77,16 @@ function MainScreen() {
       bottomSheetMarkerListRef.current.present();
     }
   }, [bottomSheetMarkerListRef])
+
+  // if the user leaves the group or changes group, we need to return to the marker bottom sheet
+  useEffect(() => {
+    if (bottomSheetAddReminderRef && bottomSheetReminderListRef && bottomSheetAddMarkerRef) {
+      bottomSheetAddReminderRef.current.dismiss();
+      bottomSheetReminderListRef.current.dismiss();
+      dismissAddMarkerSheet();
+      setCurrentMarkerId(null);
+    }
+  }, [group])
 
   // dismiss add marker bottom sheet
   function dismissAddMarkerSheet() {
