@@ -11,7 +11,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
   const reminders = useRemindersStore(state => state.reminders);
   const setReminders = useRemindersStore(state => state.setReminders);
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       description: '',
     }
@@ -35,6 +35,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
     if (error) {
       Alert.alert(error.message)
     } else {
+      reset();
       bottomSheetAddReminderRef.current.dismiss()
     }
   }

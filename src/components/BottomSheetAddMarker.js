@@ -17,7 +17,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
   const group = useGroupStore(state => state.group)
 
   // marker form
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       markerName: '',
     }
@@ -36,6 +36,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
     if (error) {
       Alert.alert("Failed to add marker.")
     } else {
+      reset();
       setMarkers([...markers, ...data])
       toast.show({description: "Successfully added marker."})
       dismissAddMarkerSheet();

@@ -9,7 +9,7 @@ function AddMemberScreen() {
   const navigation = useNavigation()
   const group = useGroupStore(state => state.group)
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       email: '',
     }
@@ -31,6 +31,7 @@ function AddMemberScreen() {
     if (error || emailError) {
       Alert.alert(error.message)
     } else {
+      reset();
       navigation.navigate("ViewGroup")
     }
   }

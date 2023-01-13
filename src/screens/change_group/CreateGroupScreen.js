@@ -11,7 +11,7 @@ function CreateGroupScreen() {
   const user = useSessionStore(state => state.user)
   const setGroup = useGroupStore(state => state.setGroup)
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       groupName: '',
     }
@@ -37,6 +37,7 @@ function CreateGroupScreen() {
     if (error || groupError) {
       Alert.alert(error.message)
     } else {
+      reset();
       navigation.navigate("MainScreen")
     }
   }
