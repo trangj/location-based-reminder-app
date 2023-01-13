@@ -1,37 +1,23 @@
 import { useCallback, useMemo, useRef } from 'react';
-import { Alert, Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { BottomSheetBackdrop, BottomSheetFlatList, BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetBackdrop, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useMarkerStore } from '../../stores/markerStore';
-import ListItem from '../../ui/ListItem';
-import { supabase } from '../../lib/supabase';
-import { useGroupStore } from '../../stores/groupStore';
 import { useEffect, useState } from 'react';
-import { Button, Divider, FormControl, Text, useToast, VStack } from 'native-base';
-import { Controller, useForm } from 'react-hook-form';
-import { useNavigation } from '@react-navigation/native';
-import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper';
-
 import * as Location from 'expo-location';
-import dayjs from 'dayjs';
+import BottomSheetMarkerList from '../../components/BottomSheetMarkerList';
+import BottomSheetAddMarker from '../../components/BottomSheetAddMarker';
+
 function MainScreen() {
-  // navigation
-  const navigation = useNavigation()
-
-  // toast
-  const toast = useToast()
-
   // stores
   const markers = useMarkerStore(state => state.markers)
-  const setMarkers = useMarkerStore(state => state.setMarkers)
-  const group = useGroupStore(state => state.group)
 
   // mapview
   const mapRef = useRef()
 
   // bottom sheet
   const [newMarker, setNewMarker] = useState(null)
-  const bottomSheetFlatListRef = useRef(null)
+  const bottomSheetMarkerListRef = useRef(null)
   const bottomSheetAddMarkerRef = useRef(null)
   const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
   const renderBackdrop = useCallback(props => (
@@ -78,36 +64,10 @@ function MainScreen() {
 
   // display marker list on load
   useEffect(() => {
-    if (bottomSheetFlatListRef.current) {
-      bottomSheetFlatListRef.current.present();
+    if (bottomSheetMarkerListRef.current) {
+      bottomSheetMarkerListRef.current.present();
     }
-  }, [bottomSheetFlatListRef])
-
-  async function onSubmit({ markerName }) {
-    const {data, error} = await supabase.from('marker').insert([
-      { 
-        group_id: group.id, 
-        latitude: newMarker.coordinate.latitude,
-        longitude: newMarker.coordinate.longitude,
-        name: markerName
-      }
-    ]).select();
-
-    if (error) {
-      Alert.alert("Failed to add marker.")
-    } else {
-      setMarkers([...markers, ...data])
-      toast.show({description: "Successfully added marker."})
-      dismissAddMarkerSheet();
-    }
-  }
-
-  // marker form
-  const { control, handleSubmit, formState: { errors } } = useForm({
-    defaultValues: {
-      markerName: '',
-    }
-  });
+  }, [bottomSheetMarkerListRef])
 
   // dismiss add marker bottom sheet
   function dismissAddMarkerSheet() {
@@ -146,88 +106,18 @@ function MainScreen() {
         }
       </MapView>
       <BottomSheetModalProvider>
-        <BottomSheetModal
-          ref={bottomSheetFlatListRef}
-          backdropComponent={renderBackdrop}
-          index={1}
+        <BottomSheetMarkerList 
+          ref={{ bottomSheetMarkerListRef, mapRef }} 
+          renderBackdrop={renderBackdrop} 
+          snapPoints={snapPoints} 
+          markers={markers} 
+        />
+        <BottomSheetAddMarker
+          ref={{ bottomSheetAddMarkerRef }}
+          renderBackdrop={renderBackdrop}
           snapPoints={snapPoints}
-          enablePanDownToClose={false}
-        >
-          <BottomSheetFlatList
-            ListHeaderComponent={() => (
-              <Text fontSize="2xl" p="2" fontWeight="bold">Markers</Text>
-            )}
-            data={markers}
-            keyExtractor={(marker) => marker.id}
-            ItemSeparatorComponent={() => (<Divider />)}
-            renderItem={({item}) => (
-              <ListItem
-                onPress={() => 
-                  mapRef.current.animateToRegion({
-                    latitude: item.latitude,
-                    longitude: item.longitude,
-                    latitudeDelta: 0.02,
-                    longitudeDelta: 0.02
-                  })
-                }
-                onLongPress={() => navigation.navigate("MarkerDetails", {markerId: item.id})}
-                justifyContent="space-between"
-              >
-                <VStack>
-                  <Text>
-                    {item.name}
-                  </Text>
-                  <Text fontSize="xs" color="gray.500">
-                    {dayjs(item.created_at).format('DD-MM-YYYY')}
-                  </Text>
-                </VStack>
-                <Text>
-                  {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
-                </Text>
-              </ListItem>
-            )}
-          />
-        </BottomSheetModal>
-        <BottomSheetModal
-          ref={bottomSheetAddMarkerRef}
-          backdropComponent={renderBackdrop}
-          index={1}
-          snapPoints={snapPoints}
-          keyboardBehavior="extend"
-          keyboardBlurBehavior="restore"
-          enablePanDownToClose={false}
-        >
-          <VStack p="2">
-          <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
-            <FormControl isInvalid={errors.markerName}>
-              <FormControl.Label>Marker Name</FormControl.Label>
-              <Controller
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <BottomSheetInputWrapper
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                )}
-                name="markerName"
-              />
-              <FormControl.ErrorMessage>
-                Marker name is required.
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <VStack space="2" pt="2">
-              <Button onPress={() => dismissAddMarkerSheet()} 
-              variant="ghost">
-                Exit
-              </Button>
-              <Button onPress={handleSubmit(onSubmit)}>
-                Add Marker
-              </Button>
-            </VStack>
-          </VStack>
-        </BottomSheetModal>
+          dismissAddMarkerSheet={dismissAddMarkerSheet}
+        />
       </BottomSheetModalProvider>
     </>
   )
