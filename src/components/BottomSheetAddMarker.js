@@ -48,11 +48,12 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
       backdropComponent={renderBackdrop}
       index={1}
       snapPoints={snapPoints}
+      keyboardBlurBehavior={'restore'}
       keyboardBehavior="extend"
-      keyboardBlurBehavior="restore"
+      android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
     >
-      <VStack p="2">
+      <VStack space="2" p="2">
         <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
         <FormControl isInvalid={errors.markerName}>
           <FormControl.Label>Marker Name</FormControl.Label>
@@ -72,11 +73,12 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
             Marker name is required.
           </FormControl.ErrorMessage>
         </FormControl>
-        <VStack space="2" pt="2">
-          <Button onPress={handleSubmit(onSubmit)}>
-            Add Marker
-          </Button>
-        </VStack>
+        <Button variant="ghost" onPress={() => dismissAddMarkerSheet()}>
+          Go Back
+        </Button>
+        <Button onPress={handleSubmit(onSubmit)}>
+          Add Marker
+        </Button>
       </VStack>
     </BottomSheetModal>
   )

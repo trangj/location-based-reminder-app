@@ -5,7 +5,9 @@ import { Divider, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import ListItem from '../ui/ListItem'
 
-const BottomSheetMarkerList = forwardRef(({renderBackdrop, snapPoints, markers}, { bottomSheetMarkerListRef, mapRef }) => {
+const BottomSheetMarkerList = forwardRef((
+  {renderBackdrop, snapPoints, markers, setCurrentMarkerId}, 
+  { bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }) => {
   // navigation
   const navigation = useNavigation()
   
@@ -34,7 +36,10 @@ const BottomSheetMarkerList = forwardRef(({renderBackdrop, snapPoints, markers},
                 longitudeDelta: 0.02
               })
             }
-            onLongPress={() => navigation.navigate("MarkerDetails", {markerId: item.id})}
+            onLongPress={() => {
+              setCurrentMarkerId(item.id)
+              bottomSheetReminderListRef.current.present()
+            }}
             justifyContent="space-between"
           >
             <VStack>

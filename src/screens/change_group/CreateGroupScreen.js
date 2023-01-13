@@ -37,7 +37,7 @@ function CreateGroupScreen() {
     if (error || groupError) {
       Alert.alert(error.message)
     } else {
-      navigation.navigate("MainNavigator")
+      navigation.navigate("MainScreen")
     }
   }
   

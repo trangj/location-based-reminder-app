@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
 import BottomSheetMarkerList from '../../components/BottomSheetMarkerList';
 import BottomSheetAddMarker from '../../components/BottomSheetAddMarker';
+import BottomSheetReminderList from '../../components/BottomSheetReminderList';
+import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
 
 function MainScreen() {
   // stores
@@ -17,8 +19,13 @@ function MainScreen() {
 
   // bottom sheet
   const [newMarker, setNewMarker] = useState(null)
+  const [currentMarkerId, setCurrentMarkerId] = useState(null)
+
   const bottomSheetMarkerListRef = useRef(null)
   const bottomSheetAddMarkerRef = useRef(null)
+  const bottomSheetReminderListRef = useRef(null)
+  const bottomSheetAddReminderRef = useRef(null)
+
   const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
   const renderBackdrop = useCallback(props => (
     <BottomSheetBackdrop
@@ -107,16 +114,29 @@ function MainScreen() {
       </MapView>
       <BottomSheetModalProvider>
         <BottomSheetMarkerList 
-          ref={{ bottomSheetMarkerListRef, mapRef }} 
+          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
           renderBackdrop={renderBackdrop} 
           snapPoints={snapPoints} 
-          markers={markers} 
+          markers={markers}
+          setCurrentMarkerId={setCurrentMarkerId} 
         />
         <BottomSheetAddMarker
           ref={{ bottomSheetAddMarkerRef }}
           renderBackdrop={renderBackdrop}
           snapPoints={snapPoints}
           dismissAddMarkerSheet={dismissAddMarkerSheet}
+        />
+        <BottomSheetReminderList 
+          ref={{ bottomSheetReminderListRef, bottomSheetAddReminderRef }}
+          renderBackdrop={renderBackdrop}
+          snapPoints={snapPoints}
+          markerId={currentMarkerId}
+        />
+        <BottomSheetAddReminder 
+          ref={{ bottomSheetAddReminderRef }}
+          renderBackdrop={renderBackdrop}
+          snapPoints={snapPoints}
+          markerId={currentMarkerId}
         />
       </BottomSheetModalProvider>
     </>
