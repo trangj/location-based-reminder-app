@@ -10,7 +10,7 @@ const Tabs = createBottomTabNavigator();
 
 const TabsNavigator = () => {
   return (
-    <Tabs.Navigator initialRouteName='MainNavigator'>
+    <Tabs.Navigator initialRouteName='MainNavigator' screenOptions={{ tabBarActiveTintColor: '#2563eb' }}>
       <Tabs.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, title: "Map", tabBarIcon: ({color, size}) => <Ionicons name='navigate-circle' color={color} size={size} />}} />
       <Tabs.Screen name="GroupNavigator" component={GroupNavigator} options={{ headerShown: false, title: "Current Group", tabBarIcon: ({color, size}) => <Ionicons name='people' color={color} size={size} />}} />
       <Tabs.Screen name="ChangeGroupNavigator" component={ChangeGroupNavigator} options={{ headerShown: false, title: 'Change Group', tabBarIcon: ({color, size}) => <Ionicons name='swap-horizontal' color={color} size={size} />}} />

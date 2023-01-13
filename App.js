@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './src/navigators/AuthNavigator'
 import { NativeBaseProvider } from "native-base";
-import { Alert, SafeAreaView, StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { supabase } from './src/lib/supabase'
 import { useEffect, useState } from 'react'
 import { useMarkerStore } from './src/stores/markerStore'
@@ -13,6 +13,7 @@ import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import dayjs from 'dayjs'
+import { theme } from './src/lib/theme';
 
 // date formater setup
 dayjs().format()
@@ -111,7 +112,7 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={theme}>
         <NavigationContainer>
           <AuthNavigator />
           <StatusBar />

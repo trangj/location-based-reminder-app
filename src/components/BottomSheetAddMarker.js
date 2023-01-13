@@ -1,5 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { Button, FormControl, Text, useToast, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, HStack, IconButton, Text, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useMarkerStore } from '../stores/markerStore'
 import { useGroupStore } from '../stores/groupStore'
@@ -52,9 +52,28 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
+      enablePanDownToClose={false}
     >
       <VStack space="2" p="2">
-        <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
+        <HStack
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
+          <HStack
+            ml="auto"
+            mr="2"
+          >
+            <IconButton 
+              colorScheme="gray"
+              borderRadius="full"
+              variant="subtle"
+              size="sm"
+              icon={<CloseIcon />}
+              onPress={() => dismissAddMarkerSheet()}
+            />
+          </HStack>
+        </HStack>
         <FormControl isInvalid={errors.markerName}>
           <FormControl.Label>Marker Name</FormControl.Label>
           <Controller
@@ -73,9 +92,6 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
             Marker name is required.
           </FormControl.ErrorMessage>
         </FormControl>
-        <Button variant="ghost" onPress={() => dismissAddMarkerSheet()}>
-          Go Back
-        </Button>
         <Button onPress={handleSubmit(onSubmit)}>
           Add Marker
         </Button>

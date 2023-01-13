@@ -1,5 +1,5 @@
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { Button, FormControl, Text, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, HStack, IconButton, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { supabase } from '../lib/supabase';
@@ -48,9 +48,28 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
       keyboardBlurBehavior={'restore'}
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
+      enablePanDownToClose={false}
     >
       <VStack space="2" p="2">
-        <Text fontSize="2xl" fontWeight="bold">Add Reminder</Text>
+        <HStack
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Text fontSize="2xl" fontWeight="bold">Add Reminder</Text>
+          <HStack
+            ml="auto"
+            mr="2"
+          >
+            <IconButton 
+              colorScheme="gray"
+              borderRadius="full"
+              variant="subtle"
+              size="sm"
+              icon={<CloseIcon />}
+              onPress={() => bottomSheetAddReminderRef.current.dismiss()}
+            />
+          </HStack>
+        </HStack>
         <FormControl isInvalid={errors.description}>
           <FormControl.Label>Description</FormControl.Label>
           <Controller
@@ -69,9 +88,6 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
             Reminder description is required.
           </FormControl.ErrorMessage>
         </FormControl>
-        <Button variant="ghost" onPress={() => bottomSheetAddReminderRef.current.dismiss()}>
-          Go Back
-        </Button>
         <Button onPress={handleSubmit(onSubmit)}>
           Add Reminder
         </Button>

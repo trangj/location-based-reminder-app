@@ -58,7 +58,7 @@ function ChangeGroupScreen() {
           </ListItem>
         )}
       />
-      <VStack mt="auto" space="2" p="4" bgColor="white">
+      <VStack mt="auto" space="2" p="2" bgColor="white">
         <Button
           onPress={() => navigation.navigate('CreateGroup')}
         >

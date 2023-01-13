@@ -1,5 +1,4 @@
 import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet'
-import { useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
 import { Divider, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
@@ -8,8 +7,6 @@ import ListItem from '../ui/ListItem'
 const BottomSheetMarkerList = forwardRef((
   {renderBackdrop, snapPoints, markers, setCurrentMarkerId}, 
   { bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }) => {
-  // navigation
-  const navigation = useNavigation()
   
   return (
     <BottomSheetModal

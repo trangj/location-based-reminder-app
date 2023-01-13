@@ -77,57 +77,59 @@ const BottomSheetMarkerList = forwardRef((
       backdropComponent={renderBackdrop}
       index={1}
       snapPoints={snapPoints}
-      footerComponent={(props) => (
-        <BottomSheetFooter {...props}>
-          <HStack
-            ml="auto"
-            space="3"
-            m="4"
-          >
-            <IconButton 
-              variant="solid"
-              borderRadius="full"
-              shadow="1"
-              size="lg"
-              icon={<ArrowBackIcon />}
-              onPress={() => bottomSheetReminderListRef.current.dismiss()}
-            />
-            <IconButton 
-              variant="solid"
-              colorScheme="danger"
-              borderRadius="full"
-              shadow="1"
-              size="lg"
-              icon={<DeleteIcon />}
-              onPress={() => {
-                Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
-                  {
-                    text: "Cancel",
-                    style: 'cancel'
-                  },
-                  {
-                    text: "Delete",
-                    style: 'destructive',
-                    onPress: () => deleteMarker()
-                  }
-                ])
-              }}
-            />
-            <IconButton 
-              variant="solid"
-              borderRadius="full"
-              shadow="1"
-              size="lg"
-              icon={<AddIcon />}
-              onPress={() => bottomSheetAddReminderRef.current.present()}
-            />
-          </HStack>
-        </BottomSheetFooter>
-      )}
+      enablePanDownToClose={false}
     >
       <BottomSheetFlatList
         ListHeaderComponent={() => (
-          <Text fontSize="2xl" p="2" fontWeight="bold">Reminders</Text>
+          <HStack
+            alignItems="center"
+            justifyContent="center"
+            p="2"
+          >
+            <Text fontSize="2xl" fontWeight="bold">Reminders</Text>
+            <HStack
+              ml="auto"
+              space="2"
+              mr="2"
+            >
+              <IconButton 
+                borderRadius="full"
+                variant="subtle"
+                colorScheme="gray"
+                size="sm"
+                icon={<DeleteIcon />}
+                onPress={() => {
+                  Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
+                    {
+                      text: "Cancel",
+                      style: 'cancel'
+                    },
+                    {
+                      text: "Delete",
+                      style: 'destructive',
+                      onPress: () => deleteMarker()
+                    }
+                  ])
+                }}
+              />
+              <IconButton 
+                borderRadius="full"
+                colorScheme="gray"
+                variant="subtle"
+                size="sm"
+                icon={<AddIcon />}
+                onPress={() => bottomSheetAddReminderRef.current.present()}
+              />
+              <IconButton 
+                colorScheme="gray"
+                borderRadius="full"
+                variant="subtle"
+                size="sm"
+                icon={<CloseIcon />}
+                onPress={() => bottomSheetReminderListRef.current.dismiss()}
+              />
+            </HStack>
+          </HStack>
         )}
         data={reminders}
         keyExtractor={(reminder) => reminder.id}
@@ -150,6 +152,7 @@ const BottomSheetMarkerList = forwardRef((
             </VStack>
             <IconButton 
               ml="auto"
+              colorScheme="gray"
               icon={<CloseIcon/>}
               onPress={() => deleteReminder(reminder.id)}
             />
