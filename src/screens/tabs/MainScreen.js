@@ -107,7 +107,7 @@ function MainScreen() {
             <Marker
               coordinate={newMarker.coordinate}
               title={newMarker.title}
-              pinColor="#00FF00"
+              pinColor="#1d4ed8"
             />
           )
         }

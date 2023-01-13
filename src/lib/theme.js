@@ -30,6 +30,11 @@ export const theme = extendTheme({
       baseStyle: {
         rounded: 'lg'
       }
+    },
+    Checkbox: {
+      baseStyle: {
+        rounded: 'full'
+      }
     }
   }
 })

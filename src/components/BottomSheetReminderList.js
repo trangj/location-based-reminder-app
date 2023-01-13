@@ -141,6 +141,7 @@ const BottomSheetMarkerList = forwardRef((
               accessibilityLabel="Reminder completion status"
               onChange={checked => changeReminderStatus(reminder.id, checked)}
               mr="4"
+              ml="2"
             />
             <VStack>
               <Text>
@@ -152,6 +153,7 @@ const BottomSheetMarkerList = forwardRef((
             </VStack>
             <IconButton 
               ml="auto"
+              size="sm"
               colorScheme="gray"
               icon={<CloseIcon/>}
               onPress={() => deleteReminder(reminder.id)}
