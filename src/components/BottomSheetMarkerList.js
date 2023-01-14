@@ -1,21 +1,23 @@
-import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
 import { Divider, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
+import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
 
 const BottomSheetMarkerList = forwardRef((
-  {renderBackdrop, snapPoints, markers, setCurrentMarkerId}, 
-  { bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }) => {
-  
+  {
+    markers, 
+    setCurrentMarkerId
+  }, 
+  { 
+    bottomSheetMarkerListRef, 
+    mapRef, 
+    bottomSheetReminderListRef 
+  }) => {
+    
   return (
-    <BottomSheetModal
-      ref={bottomSheetMarkerListRef}
-      backdropComponent={renderBackdrop}
-      index={1}
-      snapPoints={snapPoints}
-      enablePanDownToClose={false}
-    >
+    <CustomBottomSheetModal ref={bottomSheetMarkerListRef}>
       <BottomSheetFlatList
         ListHeaderComponent={() => (
           <Text fontSize="2xl" p="2" fontWeight="bold">Markers</Text>
@@ -53,7 +55,7 @@ const BottomSheetMarkerList = forwardRef((
           </ListItem>
         )}
       />
-    </BottomSheetModal>
+    </CustomBottomSheetModal>
   )
 })
 

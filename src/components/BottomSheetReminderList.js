@@ -1,17 +1,23 @@
-import { BottomSheetModal, BottomSheetFlatList, BottomSheetFooter } from '@gorhom/bottom-sheet'
+import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { AddIcon, ArrowBackIcon, Checkbox, CloseIcon, DeleteIcon, Divider, HStack, IconButton, Text, VStack } from 'native-base'
+import { AddIcon, Checkbox, CloseIcon, DeleteIcon, Divider, HStack, IconButton, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
 import { Alert } from 'react-native'
 import { supabase } from '../lib/supabase'
 import { useMarkerStore } from '../stores/markerStore'
 import { useRemindersStore } from '../stores/reminderStore'
+import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
 
 const BottomSheetMarkerList = forwardRef((
-  {renderBackdrop, snapPoints, markerId}, 
-  { bottomSheetReminderListRef, bottomSheetAddReminderRef }) => {
+  {
+    markerId
+  }, 
+  { 
+    bottomSheetReminderListRef,
+    bottomSheetAddReminderRef
+  }) => {
 
   // stores
   const reminders = useRemindersStore(state => state.reminders);
@@ -72,13 +78,7 @@ const BottomSheetMarkerList = forwardRef((
   }
   
   return (
-    <BottomSheetModal
-      ref={bottomSheetReminderListRef}
-      backdropComponent={renderBackdrop}
-      index={1}
-      snapPoints={snapPoints}
-      enablePanDownToClose={false}
-    >
+    <CustomBottomSheetModal ref={bottomSheetReminderListRef}>
       <BottomSheetFlatList
         ListHeaderComponent={() => (
           <HStack
@@ -161,7 +161,7 @@ const BottomSheetMarkerList = forwardRef((
           </ListItem>
         )}
       />
-    </BottomSheetModal>
+    </CustomBottomSheetModal>
   )
 })
 

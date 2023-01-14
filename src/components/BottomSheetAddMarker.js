@@ -1,4 +1,3 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Button, CloseIcon, FormControl, HStack, IconButton, Text, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useMarkerStore } from '../stores/markerStore'
@@ -7,13 +6,23 @@ import { Controller, useForm } from 'react-hook-form'
 import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
+import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 
-const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAddMarkerSheet}, { bottomSheetAddMarkerRef }) => {
+const BottomSheetAddMarker = forwardRef((
+  {
+    dismissAddMarkerSheet,
+    newMarker
+  },
+  { 
+    bottomSheetAddMarkerRef
+  }) => {
+
   // toast
   const toast = useToast()
 
   // stores
   const setMarkers = useMarkerStore(state => state.setMarkers)
+  const markers = useMarkerStore(state => state.markers)
   const group = useGroupStore(state => state.group)
 
   // marker form
@@ -44,16 +53,12 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
   }
 
   return (
-    <BottomSheetModal
+    <CustomBottomSheetModal
       ref={bottomSheetAddMarkerRef}
-      backdropComponent={renderBackdrop}
-      index={1}
-      snapPoints={snapPoints}
       keyboardBlurBehavior={'restore'}
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
-      enablePanDownToClose={false}
     >
       <VStack space="2" p="2">
         <HStack
@@ -97,7 +102,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, dismissAdd
           Add Marker
         </Button>
       </VStack>
-    </BottomSheetModal>
+    </CustomBottomSheetModal>
   )
 })
 

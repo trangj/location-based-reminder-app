@@ -14,6 +14,7 @@ import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import dayjs from 'dayjs'
 import { theme } from './src/lib/theme';
+import { debounce } from './src/lib/util';
 
 // date formater setup
 dayjs().format()
@@ -27,6 +28,17 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const sendNotification = debounce(() => {
+  const schedulingOptions = {
+    content: {
+      title: 'You have arrived at a marker',
+      body: 'Check the app to see your reminders for this marker.',
+      sound: true,
+    },
+    trigger: null,
+  };
+  Notifications.scheduleNotificationAsync(schedulingOptions);
+}, 2000);
 
 // send notifications when user enters a marker
 TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error }) => {
@@ -36,15 +48,7 @@ TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error 
   }
   
   if (eventType === Location.GeofencingEventType.Enter) {
-    const schedulingOptions = {
-      content: {
-        title: 'You have arrived at a marker',
-        body: 'Check the app to see your reminders for this marker.',
-        sound: true,
-      },
-      trigger: null,
-    };
-    Notifications.scheduleNotificationAsync(schedulingOptions);
+    sendNotification();
   }
 });
 
@@ -108,6 +112,8 @@ export default function App() {
     }))
 
     Location.startGeofencingAsync("MARKER_GEOFENCE", markerRegion);
+
+    return () => Location.stopGeofencingAsync("MARKER_GEOFENCE");
   }, [markers, locationStatus])
 
   return (

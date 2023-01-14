@@ -10,8 +10,13 @@ import BottomSheetAddMarker from '../../components/BottomSheetAddMarker';
 import BottomSheetReminderList from '../../components/BottomSheetReminderList';
 import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
 import { useGroupStore } from '../../stores/groupStore';
+import { useNavigation } from '@react-navigation/native';
+import { Box } from 'native-base';
 
 function MainScreen() {
+  // navigation context
+  const navigation = useNavigation()
+
   // stores
   const markers = useMarkerStore(state => state.markers)
   const group = useGroupStore(state => state.group);
@@ -27,15 +32,6 @@ function MainScreen() {
   const bottomSheetAddMarkerRef = useRef(null)
   const bottomSheetReminderListRef = useRef(null)
   const bottomSheetAddReminderRef = useRef(null)
-
-  const snapPoints = useMemo(() => ['10%', '35%', '95%'], []);
-  const renderBackdrop = useCallback(props => (
-    <BottomSheetBackdrop
-      {...props}
-      appearsOnIndex={2}
-      disappearsOnIndex={1}
-    />
-  ), [])
 
   // handling actions
   function handleLongPress({nativeEvent}) {
@@ -69,6 +65,12 @@ function MainScreen() {
         longitudeDelta: 0.05
       })
     })();
+
+    const openBottomSheet = navigation.addListener('tabPress', () => {
+      bottomSheetMarkerListRef.current.present();
+    })
+
+    return openBottomSheet;
   }, []);
 
   // display marker list on load
@@ -124,33 +126,28 @@ function MainScreen() {
           )
         }
       </MapView>
-      <BottomSheetModalProvider>
-        <BottomSheetMarkerList 
-          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
-          renderBackdrop={renderBackdrop} 
-          snapPoints={snapPoints} 
-          markers={markers}
-          setCurrentMarkerId={setCurrentMarkerId} 
-        />
-        <BottomSheetAddMarker
-          ref={{ bottomSheetAddMarkerRef }}
-          renderBackdrop={renderBackdrop}
-          snapPoints={snapPoints}
-          dismissAddMarkerSheet={dismissAddMarkerSheet}
-        />
-        <BottomSheetReminderList 
-          ref={{ bottomSheetReminderListRef, bottomSheetAddReminderRef }}
-          renderBackdrop={renderBackdrop}
-          snapPoints={snapPoints}
-          markerId={currentMarkerId}
-        />
-        <BottomSheetAddReminder 
-          ref={{ bottomSheetAddReminderRef }}
-          renderBackdrop={renderBackdrop}
-          snapPoints={snapPoints}
-          markerId={currentMarkerId}
-        />
-      </BottomSheetModalProvider>
+      <Box safeAreaTop h="full" w="full" position="absolute">
+        <BottomSheetModalProvider>
+          <BottomSheetMarkerList 
+            ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
+            markers={markers}
+            setCurrentMarkerId={setCurrentMarkerId} 
+          />
+          <BottomSheetAddMarker
+            ref={{ bottomSheetAddMarkerRef }}
+            dismissAddMarkerSheet={dismissAddMarkerSheet}
+            newMarker={newMarker}
+          />
+          <BottomSheetReminderList 
+            ref={{ bottomSheetReminderListRef, bottomSheetAddReminderRef }}
+            markerId={currentMarkerId}
+          />
+          <BottomSheetAddReminder 
+            ref={{ bottomSheetAddReminderRef }}
+            markerId={currentMarkerId}
+          />
+        </BottomSheetModalProvider>
+      </Box>
     </>
   )
 }

@@ -1,4 +1,3 @@
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Button, CloseIcon, FormControl, HStack, IconButton, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -6,8 +5,9 @@ import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
 import { useRemindersStore } from '../stores/reminderStore';
+import CustomBottomSheetModal from '../ui/CustomBottomSheetModal';
 
-const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId}, { bottomSheetAddReminderRef }) => {
+const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderRef }) => {
   const reminders = useRemindersStore(state => state.reminders);
   const setReminders = useRemindersStore(state => state.setReminders);
 
@@ -41,15 +41,11 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
   }
 
   return (
-    <BottomSheetModal
+    <CustomBottomSheetModal
       ref={bottomSheetAddReminderRef}
-      backdropComponent={renderBackdrop}
-      index={1}
-      snapPoints={snapPoints}
       keyboardBlurBehavior={'restore'}
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
-      enablePanDownToClose={false}
     >
       <VStack space="2" p="2">
         <HStack
@@ -93,7 +89,7 @@ const BottomSheetAddMarker = forwardRef(({renderBackdrop, snapPoints, markerId},
           Add Reminder
         </Button>
       </VStack>
-    </BottomSheetModal>
+    </CustomBottomSheetModal>
   )
 })
 
