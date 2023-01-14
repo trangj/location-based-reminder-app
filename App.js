@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigator from './src/navigators/AuthNavigator'
 import { NativeBaseProvider } from "native-base";
-import { Alert, SafeAreaView, StatusBar } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { supabase } from './src/lib/supabase'
 import { useEffect, useState } from 'react'
 import { useMarkerStore } from './src/stores/markerStore'
@@ -12,6 +12,12 @@ import * as Location from 'expo-location'
 import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import dayjs from 'dayjs'
+import { theme } from './src/lib/theme';
+import { debounce } from './src/lib/util';
+
+// date formater setup
+dayjs().format()
 
 // define notification settings
 Notifications.setNotificationHandler({
@@ -22,6 +28,17 @@ Notifications.setNotificationHandler({
   }),
 });
 
+const sendNotification = debounce(() => {
+  const schedulingOptions = {
+    content: {
+      title: 'You have arrived at a marker',
+      body: 'Check the app to see your reminders for this marker.',
+      sound: true,
+    },
+    trigger: null,
+  };
+  Notifications.scheduleNotificationAsync(schedulingOptions);
+}, 2000);
 
 // send notifications when user enters a marker
 TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error }) => {
@@ -31,15 +48,7 @@ TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error 
   }
   
   if (eventType === Location.GeofencingEventType.Enter) {
-    const schedulingOptions = {
-      content: {
-        title: 'You have arrived at a marker',
-        body: 'Check the app to see your reminders for this marker.',
-        sound: true,
-      },
-      trigger: null,
-    };
-    Notifications.scheduleNotificationAsync(schedulingOptions);
+    sendNotification();
   }
 });
 
@@ -103,11 +112,13 @@ export default function App() {
     }))
 
     Location.startGeofencingAsync("MARKER_GEOFENCE", markerRegion);
+
+    return () => Location.stopGeofencingAsync("MARKER_GEOFENCE");
   }, [markers, locationStatus])
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NativeBaseProvider>
+      <NativeBaseProvider theme={theme}>
         <NavigationContainer>
           <AuthNavigator />
           <StatusBar />

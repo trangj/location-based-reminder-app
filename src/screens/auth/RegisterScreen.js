@@ -33,7 +33,7 @@ function RegisterScreen() {
     <VStack h="full">
       <ScrollView>
         <VStack space="4" mt="16" p="4">
-          <Text fontSize="2xl" >Register</Text>
+          <Text fontSize="2xl" fontWeight="bold" >Register</Text>
           <FormControl isInvalid={errors.email}>
             <FormControl.Label>Email</FormControl.Label>
             <Controller
@@ -94,7 +94,7 @@ function RegisterScreen() {
         </VStack>
       </ScrollView>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={50}>
-        <VStack mt="auto" space="2" p="4">
+        <VStack mt="auto" space="2" p="4" mb="4">
           <Button onPress={() => navigation.navigate("Login")} variant="ghost">
             Already have an account?
           </Button>

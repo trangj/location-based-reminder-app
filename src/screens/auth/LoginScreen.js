@@ -32,7 +32,7 @@ function LoginScreen() {
     <VStack h="full">
       <ScrollView>
         <VStack space="4" mt="16" p="4">
-          <Text fontSize="2xl" >Login</Text>
+          <Text fontSize="2xl" fontWeight="bold" >Login</Text>
           <FormControl isInvalid={errors.email}>
             <FormControl.Label>Email</FormControl.Label>
             <Controller
@@ -74,7 +74,7 @@ function LoginScreen() {
         </VStack>
       </ScrollView>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={50}>
-        <VStack mt="auto" space="2" p="4">
+        <VStack mt="auto" space="2" p="4" mb="4">
           <Button onPress={() => navigation.navigate("Register")} variant="ghost">
             Dont have an account?
           </Button>

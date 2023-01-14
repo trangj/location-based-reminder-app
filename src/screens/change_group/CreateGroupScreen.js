@@ -11,7 +11,7 @@ function CreateGroupScreen() {
   const user = useSessionStore(state => state.user)
   const setGroup = useGroupStore(state => state.setGroup)
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       groupName: '',
     }
@@ -37,15 +37,15 @@ function CreateGroupScreen() {
     if (error || groupError) {
       Alert.alert(error.message)
     } else {
-      navigation.navigate("MainNavigator")
+      reset();
+      navigation.navigate("MainScreen")
     }
   }
   
   return (
-    <VStack h="full">
+    <VStack h="full" bgColor="white">
       <ScrollView>
-        <VStack space="4" mt="16" p="4">
-          <Text fontSize="2xl" >Create Group</Text>
+        <VStack space="4" p="4">
           <FormControl isInvalid={errors.groupName}>
             <FormControl.Label>Group Name</FormControl.Label>
             <Controller
@@ -67,7 +67,7 @@ function CreateGroupScreen() {
         </VStack>
       </ScrollView>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={100}>
-        <VStack mt="auto" space="2" p="4">
+        <VStack mt="auto" space="2" p="2">
           <Button onPress={handleSubmit(onSubmit)}>
             Create Group
           </Button>
