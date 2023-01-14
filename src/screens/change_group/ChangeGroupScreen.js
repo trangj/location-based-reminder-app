@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, useToast, Text, Divider, VStack, Button } from 'native-base';
 import { useEffect, useState } from 'react';
+import EmptyChangeGroupList from '../../components/placeholders/EmptyChangeGroupList';
 import { supabase } from '../../lib/supabase';
 import { useGroupStore } from '../../stores/groupStore';
 import { useSessionStore } from '../../stores/sessionStore';
@@ -42,6 +43,7 @@ function ChangeGroupScreen() {
       <FlatList 
         data={groups}
         ItemSeparatorComponent={() => (<Divider />)}
+        ListEmptyComponent={EmptyChangeGroupList}
         renderItem={({item: group}) => (
           <ListItem 
           key={group.group.id}

@@ -1,9 +1,10 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { Divider, Text, VStack } from 'native-base'
+import { Button, Divider, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
+import EmptyMarkerList from './placeholders/EmptyMarkerList'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -25,6 +26,7 @@ const BottomSheetMarkerList = forwardRef((
         data={markers}
         keyExtractor={(marker) => marker.id}
         ItemSeparatorComponent={() => (<Divider />)}
+        ListEmptyComponent={EmptyMarkerList}
         renderItem={({item}) => (
           <ListItem
             onPress={() => 

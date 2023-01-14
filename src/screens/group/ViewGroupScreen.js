@@ -4,6 +4,7 @@ import { Text, FlatList, VStack, Button, Divider } from 'native-base';
 import { supabase } from '../../lib/supabase';
 import ListItem from '../../ui/ListItem';
 import { useNavigation } from '@react-navigation/native';
+import EmptyGroup from '../../components/placeholders/EmptyGroup';
 
 function ViewGroupScreen() {
   const group = useGroupStore(state => state.group);
@@ -24,10 +25,12 @@ function ViewGroupScreen() {
       }
     }
 
-    fetchMembers();
+    if (group) {
+      fetchMembers();
+    }
   }, [group])
 
-  return (
+  return group ? (
     <>
       <FlatList 
         data={members}
@@ -55,6 +58,8 @@ function ViewGroupScreen() {
         </Button>
       </VStack>
     </>
+  ) : (
+    <EmptyGroup />
   )
 }
 

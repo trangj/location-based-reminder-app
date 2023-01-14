@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { BottomSheetBackdrop, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useMarkerStore } from '../../stores/markerStore';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
@@ -11,7 +11,6 @@ import BottomSheetReminderList from '../../components/BottomSheetReminderList';
 import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
 import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
-import { Box } from 'native-base';
 
 function MainScreen() {
   // navigation context
@@ -34,7 +33,10 @@ function MainScreen() {
   const bottomSheetAddReminderRef = useRef(null)
 
   // handling actions
-  function handleLongPress({nativeEvent}) {
+  function handleLongPress({ nativeEvent }) {
+    // prevent users from adding markers if they are not in a group
+    if (!group) return;
+
     mapRef.current.animateToRegion({
       latitude: nativeEvent.coordinate.latitude,
       longitude: nativeEvent.coordinate.longitude,

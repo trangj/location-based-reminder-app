@@ -57,6 +57,7 @@ export default function App() {
   const setMarkers = useMarkerStore(state => state.setMarkers)
   const markers = useMarkerStore(state => state.markers)
   const group = useGroupStore(state => state.group);
+  const setGroup = useGroupStore(state => state.setGroup);
   const [locationStatus, setLocationStatus] = useState(false)
 
   useEffect(() => {
@@ -85,6 +86,11 @@ export default function App() {
     // clear session when user logs out
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
+
+      // if the user signs out clear the group
+      if (_event === 'SIGNED_OUT') {
+        setGroup(null);
+      }
     })
   }, [])
 

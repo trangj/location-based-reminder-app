@@ -1,6 +1,6 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { AddIcon, Checkbox, CloseIcon, DeleteIcon, Divider, HStack, IconButton, Text, VStack } from 'native-base'
+import { AddIcon, Button, Checkbox, CloseIcon, DeleteIcon, Divider, HStack, IconButton, Text, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
 import { Alert } from 'react-native'
@@ -9,6 +9,7 @@ import { useMarkerStore } from '../stores/markerStore'
 import { useRemindersStore } from '../stores/reminderStore'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
+import EmptyReminderList from './placeholders/EmptyReminderList'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -132,6 +133,7 @@ const BottomSheetMarkerList = forwardRef((
           </HStack>
         )}
         data={reminders}
+        ListEmptyComponent={EmptyReminderList}
         keyExtractor={(reminder) => reminder.id}
         ItemSeparatorComponent={() => (<Divider />)}
         renderItem={({item: reminder}) => (
