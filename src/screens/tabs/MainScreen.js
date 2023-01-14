@@ -126,28 +126,26 @@ function MainScreen() {
           )
         }
       </MapView>
-      <Box safeAreaTop h="full" w="full" position="absolute">
-        <BottomSheetModalProvider>
-          <BottomSheetMarkerList 
-            ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
-            markers={markers}
-            setCurrentMarkerId={setCurrentMarkerId} 
-          />
-          <BottomSheetAddMarker
-            ref={{ bottomSheetAddMarkerRef }}
-            dismissAddMarkerSheet={dismissAddMarkerSheet}
-            newMarker={newMarker}
-          />
-          <BottomSheetReminderList 
-            ref={{ bottomSheetReminderListRef, bottomSheetAddReminderRef }}
-            markerId={currentMarkerId}
-          />
-          <BottomSheetAddReminder 
-            ref={{ bottomSheetAddReminderRef }}
-            markerId={currentMarkerId}
-          />
-        </BottomSheetModalProvider>
-      </Box>
+      <BottomSheetModalProvider>
+        <BottomSheetMarkerList 
+          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
+          markers={markers}
+          setCurrentMarkerId={setCurrentMarkerId} 
+        />
+        <BottomSheetAddMarker
+          ref={{ bottomSheetAddMarkerRef }}
+          dismissAddMarkerSheet={dismissAddMarkerSheet}
+          newMarker={newMarker}
+        />
+        <BottomSheetReminderList 
+          ref={{ bottomSheetReminderListRef, bottomSheetAddReminderRef }}
+          markerId={currentMarkerId}
+        />
+        <BottomSheetAddReminder 
+          ref={{ bottomSheetAddReminderRef }}
+          markerId={currentMarkerId}
+        />
+      </BottomSheetModalProvider>
     </>
   )
 }
