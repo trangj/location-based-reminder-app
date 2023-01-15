@@ -151,7 +151,8 @@ function MainScreen() {
           setCurrentMarkerId={setCurrentMarkerId} 
         />
         <BottomSheetSearch 
-          ref={{ bottomSheetSearchRef, mapRef }} 
+          ref={{ bottomSheetSearchRef, bottomSheetAddMarkerRef, mapRef }}
+          setNewMarker={setNewMarker} 
         />
         <BottomSheetAddMarker
           ref={{ bottomSheetAddMarkerRef }}
