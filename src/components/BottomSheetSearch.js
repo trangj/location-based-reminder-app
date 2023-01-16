@@ -1,12 +1,13 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import { Divider, Text, VStack, HStack, IconButton, CloseIcon } from 'native-base'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 import { useState } from 'react'
 import { debounce } from '../lib/util'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
 import * as Location from 'expo-location'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
+import EmptySearch from './placeholders/EmptySearch'
 
 const BottomSheetSearch = forwardRef((
   {
@@ -21,7 +22,12 @@ const BottomSheetSearch = forwardRef((
   const [results, setResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchLocations = debounce(async (query) => {
+  const fetchLocations = useCallback(debounce(async (query) => {
+    if (!query) {
+      setResults([]);
+      return;
+    }
+
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       setErrorMsg('Permission to access location was denied');
@@ -34,12 +40,14 @@ const BottomSheetSearch = forwardRef((
       &query=${query}
       &key=KEY_GOES_HERE`)
       .then(res => res.json())
-      .then(data => setResults(data.results))
-  }, 1000)
+      .then(data => {
+        setResults(data.results)
+      })
+  }, 500), [])
   
   const handleOnChange = (text) => {
-    setSearchQuery(text)
     fetchLocations(text)
+    setSearchQuery(text)
   }
 
   return (
@@ -80,6 +88,7 @@ const BottomSheetSearch = forwardRef((
             />
           </VStack>
         }
+        ListEmptyComponent={EmptySearch}
         data={results}
         keyExtractor={(result) => result.place_id}
         ItemSeparatorComponent={() => (<Divider />)}

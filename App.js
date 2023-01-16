@@ -127,7 +127,10 @@ export default function App() {
       <NativeBaseProvider theme={theme}>
         <NavigationContainer>
           <AuthNavigator />
-          <StatusBar />
+          <StatusBar 
+            backgroundColor="white"
+            barStyle="dark-content"
+          />
         </NavigationContainer>
       </NativeBaseProvider>
     </GestureHandlerRootView>

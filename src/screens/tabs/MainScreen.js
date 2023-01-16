@@ -105,7 +105,7 @@ function MainScreen() {
     <>
       <Box safeAreaTop position="absolute" zIndex={1} alignSelf="center">
         <Button
-          size="xs"
+          size="sm"
           rounded="full"
           m="2"
           colorScheme="gray"
