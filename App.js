@@ -15,6 +15,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import dayjs from 'dayjs'
 import { theme } from './src/lib/theme';
 import { debounce } from './src/lib/util';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 
 // date formater setup
 dayjs().format()
@@ -124,15 +125,17 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NativeBaseProvider theme={theme}>
-        <NavigationContainer>
-          <AuthNavigator />
-          <StatusBar 
-            backgroundColor="white"
-            barStyle="dark-content"
-          />
-        </NavigationContainer>
-      </NativeBaseProvider>
+      <ActionSheetProvider>
+        <NativeBaseProvider theme={theme}>
+          <NavigationContainer>
+            <AuthNavigator />
+            <StatusBar 
+              backgroundColor="white"
+              barStyle="dark-content"
+            />
+          </NavigationContainer>
+        </NativeBaseProvider>
+      </ActionSheetProvider>
     </GestureHandlerRootView>
   );
 }
