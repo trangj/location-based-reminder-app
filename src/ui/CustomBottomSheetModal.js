@@ -26,7 +26,6 @@ const CustomBottomSheetModal = forwardRef(({ children, ...props }, ref) => {
       snapPoints={snapPoints}
       enablePanDownToClose={false}
       topInset={insets.top}
-      containerStyle={{ zIndex: 2 }}
       {...props}
     >
       {children}

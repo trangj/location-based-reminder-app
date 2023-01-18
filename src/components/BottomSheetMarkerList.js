@@ -1,7 +1,7 @@
 import { useActionSheet } from '@expo/react-native-action-sheet'
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { Divider, IconButton, Text, ThreeDotsIcon, VStack } from 'native-base'
+import { Button, Divider, HStack, IconButton, SearchIcon, ThreeDotsIcon, Text, VStack, Icon } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Alert } from 'react-native'
 import { supabase } from '../lib/supabase'
@@ -9,6 +9,7 @@ import { useMarkerStore } from '../stores/markerStore'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
 import EmptyMarkerList from './placeholders/EmptyMarkerList'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -18,7 +19,8 @@ const BottomSheetMarkerList = forwardRef((
   { 
     bottomSheetMarkerListRef, 
     mapRef, 
-    bottomSheetReminderListRef 
+    bottomSheetReminderListRef,
+    bottomSheetSearchRef
   }) => {
 
   const { showActionSheetWithOptions } = useActionSheet();
@@ -69,7 +71,29 @@ const BottomSheetMarkerList = forwardRef((
     <CustomBottomSheetModal ref={bottomSheetMarkerListRef}>
       <BottomSheetFlatList
         ListHeaderComponent={() => (
-          <Text fontSize="2xl" p="2" fontWeight="bold">Markers</Text>
+          <HStack
+            alignItems="center"
+            justifyContent="center"
+            p="2"
+          >
+            <Text fontSize="2xl" fontWeight="bold">Markers</Text>
+            <HStack
+              ml="auto"
+              space="2"
+              mr="2"
+            >
+              <Button 
+                borderRadius="full"
+                colorScheme="gray"
+                variant="subtle"
+                size="sm"
+                leftIcon={<SearchIcon />}
+                onPress={() => bottomSheetSearchRef.current.present()}
+              >
+                Search
+              </Button>
+            </HStack>
+          </HStack>
         )}
         data={markers}
         keyExtractor={(marker) => marker.id}
@@ -99,7 +123,7 @@ const BottomSheetMarkerList = forwardRef((
                 {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
               </Text>
             </VStack>
-            <IconButton icon={<ThreeDotsIcon/>} size="sm" colorScheme="gray" onPress={() => handlePress(item.id)} />
+            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" />} size="sm" colorScheme="gray" onPress={() => handlePress(item.id)} />
           </ListItem>
         )}
       />

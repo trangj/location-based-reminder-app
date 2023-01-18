@@ -103,19 +103,6 @@ function MainScreen() {
 
   return (
     <>
-      <Box safeAreaTop position="absolute" zIndex={1} alignSelf="center">
-        <Button
-          size="sm"
-          rounded="full"
-          m="2"
-          colorScheme="gray"
-          variant="subtle"
-          leftIcon={<SearchIcon />}
-          onPress={() => bottomSheetSearchRef.current.present()}
-        >
-          Search
-        </Button>
-      </Box>
       <MapView 
         ref={mapRef}
         style={styles.map} 
@@ -146,7 +133,7 @@ function MainScreen() {
       </MapView>
       <BottomSheetModalProvider>
         <BottomSheetMarkerList 
-          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef }} 
+          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef, bottomSheetSearchRef }} 
           markers={markers}
           setCurrentMarkerId={setCurrentMarkerId} 
         />
