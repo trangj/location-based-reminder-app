@@ -38,9 +38,9 @@ const BottomSheetMarkerList = forwardRef((
   }
 
   function handlePress(markerId) {
-    const options = ['Delete', 'Cancel'];
-    const destructiveButtonIndex = 0;
-    const cancelButtonIndex = 1;
+    const options = ['View Reminders', 'Delete', 'Cancel'];
+    const destructiveButtonIndex = 1;
+    const cancelButtonIndex = 2;
 
     showActionSheetWithOptions({
       options,
@@ -48,6 +48,10 @@ const BottomSheetMarkerList = forwardRef((
       destructiveButtonIndex
     }, (selectedIndex) => {
       switch (selectedIndex) {
+        case 0:
+          setCurrentMarkerId(markerId)
+          bottomSheetReminderListRef.current.present()
+          break;
         case destructiveButtonIndex:
           Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
             {
@@ -123,7 +127,7 @@ const BottomSheetMarkerList = forwardRef((
                 {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
               </Text>
             </VStack>
-            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" />} size="sm" colorScheme="gray" onPress={() => handlePress(item.id)} />
+            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" />} size="sm" colorScheme="gray" onPress={() => handlePress(item.id)} />
           </ListItem>
         )}
       />
