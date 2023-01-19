@@ -59,11 +59,10 @@ const BottomSheetSearch = forwardRef((
     >
       <BottomSheetFlatList
         ListHeaderComponent={
-          <VStack>
+          <VStack px="3" space="2">
             <HStack
               alignItems="center"
               justifyContent="center"
-              p="3"
             >
               <Text fontSize="2xl" fontWeight="bold">Search Nearby</Text>
               <HStack
@@ -81,7 +80,6 @@ const BottomSheetSearch = forwardRef((
               </HStack>
             </HStack>
             <BottomSheetInputWrapper 
-              mx="3" 
               onChangeText={handleOnChange}
               value={searchQuery}
             />
