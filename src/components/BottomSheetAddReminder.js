@@ -47,7 +47,7 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
     >
-      <VStack space="2" p="2">
+      <VStack space="2" px="3">
         <HStack
           alignItems="center"
           justifyContent="center"
@@ -55,7 +55,6 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
           <Text fontSize="2xl" fontWeight="bold">Add Reminder</Text>
           <HStack
             ml="auto"
-            mr="2"
           >
             <IconButton 
               colorScheme="gray"

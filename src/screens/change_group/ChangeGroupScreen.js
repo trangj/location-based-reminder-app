@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
 import { FlatList, useToast, Text, Divider, VStack, Button } from 'native-base';
 import { useEffect, useState } from 'react';
 import EmptyChangeGroupList from '../../components/placeholders/EmptyChangeGroupList';
@@ -51,12 +52,14 @@ function ChangeGroupScreen() {
           active={currentGroup && currentGroup.id === group.group.id}
           justifyContent="space-between"
           >
-            <Text p="1">
-              {group.group.group_name}
-            </Text>
-            <Text>
-              {group.group.number_of_members} Member{group.group.number_of_members === 1 ? '' : 's'}
-            </Text>
+            <VStack>
+              <Text fontWeight="medium">
+                {group.group.group_name}
+              </Text>
+              <Text fontSize="sm" color="gray.500">
+                Joined {dayjs(group.group.created_at).format('DD-MM-YYYY')} {'\u2022'} {group.group.number_of_members} Member{group.group.number_of_members === 1 ? '' : 's'}
+              </Text>
+            </VStack>
           </ListItem>
         )}
       />

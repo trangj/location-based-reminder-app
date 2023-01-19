@@ -78,13 +78,12 @@ const BottomSheetMarkerList = forwardRef((
           <HStack
             alignItems="center"
             justifyContent="center"
-            p="2"
+            px="3"
           >
             <Text fontSize="2xl" fontWeight="bold">Markers</Text>
             <HStack
               ml="auto"
               space="2"
-              mr="2"
             >
               <Button 
                 borderRadius="full"
@@ -94,7 +93,7 @@ const BottomSheetMarkerList = forwardRef((
                 leftIcon={<SearchIcon />}
                 onPress={() => bottomSheetSearchRef.current.present()}
               >
-                Search
+                Search Map
               </Button>
             </HStack>
           </HStack>
@@ -123,7 +122,7 @@ const BottomSheetMarkerList = forwardRef((
               <Text fontWeight="medium">
                 {item.name}
               </Text>
-              <Text fontSize="xs" color="gray.500">
+              <Text fontSize="sm" color="gray.500">
                 {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
               </Text>
             </VStack>

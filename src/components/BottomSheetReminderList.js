@@ -73,13 +73,12 @@ const BottomSheetMarkerList = forwardRef((
           <HStack
             alignItems="center"
             justifyContent="center"
-            p="2"
+            px="3"
           >
             <Text fontSize="2xl" fontWeight="bold">Reminders</Text>
             <HStack
               ml="auto"
               space="2"
-              mr="2"
             >
               <IconButton 
                 borderRadius="full"
@@ -111,13 +110,13 @@ const BottomSheetMarkerList = forwardRef((
               accessibilityLabel="Reminder completion status"
               onChange={checked => changeReminderStatus(reminder.id, checked)}
               mr="4"
-              ml="2"
+              ml="1"
             />
             <VStack>
               <Text strikeThrough={!!reminder.completed_at}>
                 {reminder.description}
               </Text>
-              <Text fontSize="xs" color="gray.500">
+              <Text fontSize="sm" color="gray.500">
                 {dayjs(reminder.created_at).format('DD-MM-YYYY')}
               </Text>
             </VStack>

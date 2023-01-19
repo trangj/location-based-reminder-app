@@ -63,13 +63,12 @@ const BottomSheetSearch = forwardRef((
             <HStack
               alignItems="center"
               justifyContent="center"
-              p="2"
+              p="3"
             >
               <Text fontSize="2xl" fontWeight="bold">Search Nearby</Text>
               <HStack
                 ml="auto"
                 space="2"
-                mr="2"
               >
                 <IconButton 
                   colorScheme="gray"
@@ -82,7 +81,7 @@ const BottomSheetSearch = forwardRef((
               </HStack>
             </HStack>
             <BottomSheetInputWrapper 
-              mx="2" 
+              mx="3" 
               onChangeText={handleOnChange}
               value={searchQuery}
             />

@@ -7,7 +7,7 @@ const EmptyMarkerList = () => {
   const group = useGroupStore(state => state.group);
 
   return group ? (
-    <VStack m="2" mt="10" color="gray.500" alignItems="center">
+    <VStack m="3" mt="10" color="gray.500" alignItems="center">
       <Text color="gray.500" textAlign="center" fontWeight="bold">No Markers</Text>
       <Text color="gray.500" textAlign="center">Search or find a place and long press on the map to create a new marker!</Text>
     </VStack>
