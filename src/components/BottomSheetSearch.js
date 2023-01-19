@@ -115,16 +115,18 @@ const BottomSheetSearch = forwardRef((
                 title: 'New Marker'
               })
             }}
-            justifyContent="space-between"
           >
-            <VStack>
-              <Text>
+            <VStack w="90%">
+              <Text fontWeight="medium">
                 {item.name}
               </Text>
-              <Text>
+              <Text fontSize="sm" color="gray.500" numberOfLines={1}>
                 {item.formatted_address}
               </Text>
             </VStack>
+            <Text w="10%" pl="2">
+              {item.rating}
+            </Text>
           </ListItem>
         )}
       />
