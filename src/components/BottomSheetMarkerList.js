@@ -78,7 +78,7 @@ const BottomSheetMarkerList = forwardRef((
           <HStack
             alignItems="center"
             justifyContent="center"
-            px="3"
+            p="3"
           >
             <Text fontSize="2xl" fontWeight="bold">Markers</Text>
             <HStack

@@ -59,7 +59,7 @@ const BottomSheetSearch = forwardRef((
     >
       <BottomSheetFlatList
         ListHeaderComponent={
-          <VStack px="3" space="2">
+          <VStack p="3" space="2">
             <HStack
               alignItems="center"
               justifyContent="center"

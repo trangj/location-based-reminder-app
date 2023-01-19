@@ -60,7 +60,7 @@ const BottomSheetAddMarker = forwardRef((
       android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
     >
-      <VStack space="2" px="3">
+      <VStack space="2" p="3">
         <HStack
           alignItems="center"
           justifyContent="center"
