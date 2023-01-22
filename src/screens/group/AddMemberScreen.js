@@ -64,7 +64,7 @@ function AddMemberScreen() {
         </VStack>
       </ScrollView>
       <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} keyboardVerticalOffset={100}>
-        <VStack mt="auto" space="2" p="2">
+        <VStack mt="auto" space="2" p="3">
           <Button onPress={handleSubmit(onSubmit)}>
             Add User
           </Button>

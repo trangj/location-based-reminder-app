@@ -35,6 +35,11 @@ export const theme = extendTheme({
       baseStyle: {
         rounded: 'full'
       }
+    },
+    Text: {
+      baseStyle: {
+        fontSize: 'md'
+      }
     }
   }
 })

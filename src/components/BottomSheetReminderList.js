@@ -65,18 +65,6 @@ const BottomSheetMarkerList = forwardRef((
       setReminders(reminders.filter(reminder => reminder.id !== id));
     }
   }
-
-  async function deleteMarker() {
-    const { error: reminderError } = await supabase.from('reminder').delete().match({ marker_id: markerId })
-    const { error } = await supabase.from('marker').delete().match({ id: markerId })
-
-    if (error || reminderError) {
-      Alert.alert(error.message)
-    } else {
-      setMarkers(markers.filter(marker => marker.id !== markerId));
-      bottomSheetReminderListRef.current.dismiss();
-    }
-  }
   
   return (
     <CustomBottomSheetModal ref={bottomSheetReminderListRef}>
@@ -85,34 +73,13 @@ const BottomSheetMarkerList = forwardRef((
           <HStack
             alignItems="center"
             justifyContent="center"
-            p="2"
+            p="3"
           >
             <Text fontSize="2xl" fontWeight="bold">Reminders</Text>
             <HStack
               ml="auto"
               space="2"
-              mr="2"
             >
-              <IconButton 
-                borderRadius="full"
-                variant="subtle"
-                colorScheme="gray"
-                size="sm"
-                icon={<DeleteIcon />}
-                onPress={() => {
-                  Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
-                    {
-                      text: "Cancel",
-                      style: 'cancel'
-                    },
-                    {
-                      text: "Delete",
-                      style: 'destructive',
-                      onPress: () => deleteMarker()
-                    }
-                  ])
-                }}
-              />
               <IconButton 
                 borderRadius="full"
                 colorScheme="gray"
@@ -143,13 +110,13 @@ const BottomSheetMarkerList = forwardRef((
               accessibilityLabel="Reminder completion status"
               onChange={checked => changeReminderStatus(reminder.id, checked)}
               mr="4"
-              ml="2"
+              ml="1"
             />
             <VStack>
-              <Text>
+              <Text strikeThrough={!!reminder.completed_at}>
                 {reminder.description}
               </Text>
-              <Text fontSize="xs" color="gray.500">
+              <Text fontSize="sm" color="gray.500">
                 {dayjs(reminder.created_at).format('DD-MM-YYYY')}
               </Text>
             </VStack>

@@ -8,7 +8,7 @@ const ListItem = ({ children, onPress, onLongPress, active, enablePress = true, 
         <Box 
           bg={enablePress && (isPressed || active) ? "gray.200" : "white"}
           w="full"
-          p="2"
+          p="3"
           alignItems="center"
           flexDirection="row"
           {...props}
