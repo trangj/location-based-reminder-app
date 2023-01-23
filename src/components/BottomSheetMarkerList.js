@@ -10,6 +10,7 @@ import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
 import EmptyMarkerList from './placeholders/EmptyMarkerList'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import BottomSheetHeader from './BottomSheetHeader'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -74,17 +75,10 @@ const BottomSheetMarkerList = forwardRef((
   return (
     <CustomBottomSheetModal ref={bottomSheetMarkerListRef}>
       <BottomSheetFlatList
-        ListHeaderComponent={() => (
-          <HStack
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-          >
-            <Text fontSize="2xl" fontWeight="bold">Markers</Text>
-            <HStack
-              ml="auto"
-              space="2"
-            >
+        ListHeaderComponent={
+          <BottomSheetHeader
+            text="Markers"
+            leftChildren={
               <Button 
                 borderRadius="full"
                 colorScheme="gray"
@@ -95,9 +89,9 @@ const BottomSheetMarkerList = forwardRef((
               >
                 Search Map
               </Button>
-            </HStack>
-          </HStack>
-        )}
+            }
+          />
+        }
         data={markers}
         keyExtractor={(marker) => marker.id}
         ItemSeparatorComponent={() => (<Divider />)}

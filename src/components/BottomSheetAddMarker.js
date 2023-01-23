@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
+import BottomSheetHeader from './BottomSheetHeader'
 
 const BottomSheetAddMarker = forwardRef((
   {
@@ -60,15 +61,10 @@ const BottomSheetAddMarker = forwardRef((
       android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
     >
-      <VStack space="2" p="3">
-        <HStack
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Text fontSize="2xl" fontWeight="bold">Add Marker</Text>
-          <HStack
-            ml="auto"
-          >
+      <VStack>
+        <BottomSheetHeader
+          text="Add Marker"
+          leftChildren={
             <IconButton 
               colorScheme="gray"
               borderRadius="full"
@@ -77,29 +73,31 @@ const BottomSheetAddMarker = forwardRef((
               icon={<CloseIcon />}
               onPress={() => dismissAddMarkerSheet()}
             />
-          </HStack>
-        </HStack>
-        <FormControl isInvalid={errors.markerName}>
-          <FormControl.Label>Marker Name</FormControl.Label>
-          <Controller
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <BottomSheetInputWrapper
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="markerName"
-          />
-          <FormControl.ErrorMessage>
-            Marker name is required.
-          </FormControl.ErrorMessage>
-        </FormControl>
-        <Button onPress={handleSubmit(onSubmit)}>
-          Add Marker
-        </Button>
+          }
+        />
+        <VStack space="2" p="3" pt="0">
+          <FormControl isInvalid={errors.markerName}>
+            <FormControl.Label>Marker Name</FormControl.Label>
+            <Controller
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <BottomSheetInputWrapper
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="markerName"
+            />
+            <FormControl.ErrorMessage>
+              Marker name is required.
+            </FormControl.ErrorMessage>
+          </FormControl>
+          <Button onPress={handleSubmit(onSubmit)}>
+            Add Marker
+          </Button>
+        </VStack>
       </VStack>
     </CustomBottomSheetModal>
   )

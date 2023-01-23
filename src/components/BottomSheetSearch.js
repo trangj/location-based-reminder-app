@@ -8,6 +8,7 @@ import ListItem from '../ui/ListItem'
 import * as Location from 'expo-location'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
 import EmptySearch from './placeholders/EmptySearch'
+import BottomSheetHeader from './BottomSheetHeader'
 
 const BottomSheetSearch = forwardRef((
   {
@@ -59,16 +60,10 @@ const BottomSheetSearch = forwardRef((
     >
       <BottomSheetFlatList
         ListHeaderComponent={
-          <VStack p="3" space="2">
-            <HStack
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Text fontSize="2xl" fontWeight="bold">Search Nearby</Text>
-              <HStack
-                ml="auto"
-                space="2"
-              >
+          <VStack>
+            <BottomSheetHeader
+              text="Search Nearby"
+              leftChildren={
                 <IconButton 
                   colorScheme="gray"
                   borderRadius="full"
@@ -77,11 +72,13 @@ const BottomSheetSearch = forwardRef((
                   icon={<CloseIcon />}
                   onPress={() => bottomSheetSearchRef.current.dismiss()}
                 />
-              </HStack>
-            </HStack>
+              }
+            />
             <BottomSheetInputWrapper 
               onChangeText={handleOnChange}
               value={searchQuery}
+              m="3"
+              mt="0"
             />
           </VStack>
         }

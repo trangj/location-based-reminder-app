@@ -9,6 +9,7 @@ import { useMarkerStore } from '../stores/markerStore'
 import { useRemindersStore } from '../stores/reminderStore'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
+import BottomSheetHeader from './BottomSheetHeader'
 import EmptyReminderList from './placeholders/EmptyReminderList'
 
 const BottomSheetMarkerList = forwardRef((
@@ -69,36 +70,31 @@ const BottomSheetMarkerList = forwardRef((
   return (
     <CustomBottomSheetModal ref={bottomSheetReminderListRef}>
       <BottomSheetFlatList
-        ListHeaderComponent={() => (
-          <HStack
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-          >
-            <Text fontSize="2xl" fontWeight="bold">Reminders</Text>
-            <HStack
-              ml="auto"
-              space="2"
-            >
-              <IconButton 
-                borderRadius="full"
-                colorScheme="gray"
-                variant="subtle"
-                size="sm"
-                icon={<AddIcon />}
-                onPress={() => bottomSheetAddReminderRef.current.present()}
-              />
-              <IconButton 
-                colorScheme="gray"
-                borderRadius="full"
-                variant="subtle"
-                size="sm"
-                icon={<CloseIcon />}
-                onPress={() => bottomSheetReminderListRef.current.dismiss()}
-              />
-            </HStack>
-          </HStack>
-        )}
+        ListHeaderComponent={
+          <BottomSheetHeader
+            text="Reminders"
+            leftChildren={
+              <>
+                <IconButton 
+                  borderRadius="full"
+                  colorScheme="gray"
+                  variant="subtle"
+                  size="sm"
+                  icon={<AddIcon />}
+                  onPress={() => bottomSheetAddReminderRef.current.present()}
+                />
+                <IconButton 
+                  colorScheme="gray"
+                  borderRadius="full"
+                  variant="subtle"
+                  size="sm"
+                  icon={<CloseIcon />}
+                  onPress={() => bottomSheetReminderListRef.current.dismiss()}
+                />
+              </>
+            }
+          />
+        }
         data={reminders}
         ListEmptyComponent={EmptyReminderList}
         keyExtractor={(reminder) => reminder.id}
