@@ -65,9 +65,8 @@ const BottomSheetSearch = forwardRef((
               text="Search Nearby"
               leftChildren={
                 <IconButton 
-                  colorScheme="gray"
                   borderRadius="full"
-                  variant="subtle"
+                  variant="header"
                   size="sm"
                   icon={<CloseIcon />}
                   onPress={() => bottomSheetSearchRef.current.dismiss()}

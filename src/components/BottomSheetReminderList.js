@@ -77,16 +77,14 @@ const BottomSheetMarkerList = forwardRef((
               <>
                 <IconButton 
                   borderRadius="full"
-                  colorScheme="gray"
-                  variant="subtle"
+                  variant="header"
                   size="sm"
                   icon={<AddIcon />}
                   onPress={() => bottomSheetAddReminderRef.current.present()}
                 />
                 <IconButton 
-                  colorScheme="gray"
                   borderRadius="full"
-                  variant="subtle"
+                  variant="header"
                   size="sm"
                   icon={<CloseIcon />}
                   onPress={() => bottomSheetReminderListRef.current.dismiss()}

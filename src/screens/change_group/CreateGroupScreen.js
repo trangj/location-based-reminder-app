@@ -43,7 +43,7 @@ function CreateGroupScreen() {
   }
   
   return (
-    <VStack h="full" bgColor="white">
+    <VStack h="full">
       <ScrollView>
         <VStack space="4" p="4">
           <FormControl isInvalid={errors.groupName}>

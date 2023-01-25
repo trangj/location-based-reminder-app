@@ -81,8 +81,7 @@ const BottomSheetMarkerList = forwardRef((
             leftChildren={
               <Button 
                 borderRadius="full"
-                colorScheme="gray"
-                variant="subtle"
+                variant="header"
                 size="sm"
                 leftIcon={<SearchIcon />}
                 onPress={() => bottomSheetSearchRef.current.present()}
