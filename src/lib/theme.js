@@ -1,4 +1,5 @@
 import { extendTheme } from "native-base";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const theme = extendTheme({
   colors: {
@@ -66,5 +67,26 @@ export const theme = extendTheme({
         fontSize: 'md'
       }
     }
+  },
+  config: {
+    useSystemColorMode: true
   }
 })
+
+export const colorModeManager = {
+  get: async () => {
+    try {
+      let val = await AsyncStorage.getItem('@color-mode');
+      return val === 'dark' ? 'dark' : 'light';
+    } catch (e) {
+      return 'light';
+    }
+  },
+  set: async (value) => {
+    try {
+      await AsyncStorage.setItem('@color-mode', value);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+};
