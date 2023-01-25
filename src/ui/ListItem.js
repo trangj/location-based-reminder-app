@@ -11,6 +11,9 @@ const ListItem = ({ children, onPress, onLongPress, active, enablePress = true, 
           p="3"
           alignItems="center"
           flexDirection="row"
+          _dark={{
+            bg: enablePress && (isPressed || active) ? "gray.800" : "gray.900"
+          }}
           {...props}
         >
           {children}

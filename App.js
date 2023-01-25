@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 import { theme } from './src/lib/theme';
 import { debounce } from './src/lib/util';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import Root from './src/Root';
 
 // date formater setup
 dayjs().format()
@@ -127,13 +128,7 @@ export default function App() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ActionSheetProvider>
         <NativeBaseProvider theme={theme}>
-          <NavigationContainer>
-            <AuthNavigator />
-            <StatusBar 
-              backgroundColor="white"
-              barStyle="dark-content"
-            />
-          </NavigationContainer>
+          <Root />
         </NativeBaseProvider>
       </ActionSheetProvider>
     </GestureHandlerRootView>
