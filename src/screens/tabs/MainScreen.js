@@ -13,6 +13,7 @@ import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
 import { useColorMode } from 'native-base';
 import BottomSheetSearch from '../../components/BottomSheetSearch';
+import { darkModeMapStyle } from '../../lib/theme';
 
 function MainScreen() {
   const { colorMode } = useColorMode()
@@ -114,6 +115,7 @@ function MainScreen() {
         onPress={() => dismissAddMarkerSheet()}
         showsUserLocation
         userInterfaceStyle={colorMode === 'dark' ? 'dark' : 'light'}
+        customMapStyle={colorMode === 'dark' ? darkModeMapStyle : []}
       >
         {
           markers.map((marker, index) => (
