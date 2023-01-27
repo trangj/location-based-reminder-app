@@ -51,7 +51,7 @@ function ViewGroupScreen() {
           </ListItem>
         )}
       />
-      <VStack mt="auto" space="2" p="3" bgColor="white">
+      <VStack mt="auto" space="2" p="3">
         <Button
           onPress={() => navigation.navigate('AddMember')}
         >

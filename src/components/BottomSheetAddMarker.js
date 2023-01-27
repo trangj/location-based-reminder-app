@@ -66,9 +66,8 @@ const BottomSheetAddMarker = forwardRef((
           text="Add Marker"
           leftChildren={
             <IconButton 
-              colorScheme="gray"
               borderRadius="full"
-              variant="subtle"
+              variant="header"
               size="sm"
               icon={<CloseIcon />}
               onPress={() => dismissAddMarkerSheet()}

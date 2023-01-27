@@ -1,4 +1,5 @@
 import { extendTheme } from "native-base";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const theme = extendTheme({
   colors: {
@@ -19,11 +20,36 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         rounded: 'lg'
+      },
+      variants: {
+        header: ({ colorMode }) => ({
+          bg: colorMode === 'dark' ? 'gray.700' : 'gray.200',
+          _pressed: {
+            bg: colorMode === 'dark' ? 'gray.600' : 'gray.300'
+          },
+          _icon: {
+            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
+          },
+          _text: {
+            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
+          },
+        })
       }
     },
     IconButton: {
       baseStyle: {
         rounded: 'lg'
+      },
+      variants: {
+        header: ({ colorMode }) => ({
+          bg: colorMode === 'dark' ? 'gray.700' : 'gray.200',
+          _pressed: {
+            bg: colorMode === 'dark' ? 'gray.600' : 'gray.300'
+          },
+          _icon: {
+            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
+          }
+        })
       }
     },
     Input: {
@@ -41,5 +67,26 @@ export const theme = extendTheme({
         fontSize: 'md'
       }
     }
+  },
+  config: {
+    useSystemColorMode: true
   }
 })
+
+export const colorModeManager = {
+  get: async () => {
+    try {
+      let val = await AsyncStorage.getItem('@color-mode');
+      return val === 'dark' ? 'dark' : 'light';
+    } catch (e) {
+      return 'light';
+    }
+  },
+  set: async (value) => {
+    try {
+      await AsyncStorage.setItem('@color-mode', value);
+    } catch (e) {
+      console.log(e);
+    }
+  },
+};

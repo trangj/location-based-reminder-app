@@ -11,10 +11,12 @@ import BottomSheetReminderList from '../../components/BottomSheetReminderList';
 import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
 import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
-import { Box, Button, SearchIcon } from 'native-base';
+import { useColorMode } from 'native-base';
 import BottomSheetSearch from '../../components/BottomSheetSearch';
 
 function MainScreen() {
+  const { colorMode } = useColorMode()
+
   // navigation context
   const navigation = useNavigation()
 
@@ -111,6 +113,7 @@ function MainScreen() {
         onLongPress={handleLongPress}
         onPress={() => dismissAddMarkerSheet()}
         showsUserLocation
+        userInterfaceStyle={colorMode === 'dark' ? 'dark' : 'light'}
       >
         {
           markers.map((marker, index) => (

@@ -53,9 +53,8 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
           text="Add Reminder"
           leftChildren={
             <IconButton 
-              colorScheme="gray"
               borderRadius="full"
-              variant="subtle"
+              variant="header"
               size="sm"
               icon={<CloseIcon />}
               onPress={() => bottomSheetAddReminderRef.current.dismiss()}

@@ -13,9 +13,10 @@ import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import dayjs from 'dayjs'
-import { theme } from './src/lib/theme';
+import { colorModeManager, theme } from './src/lib/theme';
 import { debounce } from './src/lib/util';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import Root from './src/Root';
 
 // date formater setup
 dayjs().format()
@@ -126,14 +127,8 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ActionSheetProvider>
-        <NativeBaseProvider theme={theme}>
-          <NavigationContainer>
-            <AuthNavigator />
-            <StatusBar 
-              backgroundColor="white"
-              barStyle="dark-content"
-            />
-          </NavigationContainer>
+        <NativeBaseProvider theme={theme} colorModeManager={colorModeManager}>
+          <Root />
         </NativeBaseProvider>
       </ActionSheetProvider>
     </GestureHandlerRootView>

@@ -11,6 +11,7 @@ import ListItem from '../ui/ListItem'
 import EmptyMarkerList from './placeholders/EmptyMarkerList'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import BottomSheetHeader from './BottomSheetHeader'
+import { useCustomActionSheet } from '../hooks/useCustomActionSheet'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -24,7 +25,7 @@ const BottomSheetMarkerList = forwardRef((
     bottomSheetSearchRef
   }) => {
 
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   const setMarkers = useMarkerStore(state => state.setMarkers);
 
   async function deleteMarker(markerId) {
@@ -43,10 +44,10 @@ const BottomSheetMarkerList = forwardRef((
     const destructiveButtonIndex = 1;
     const cancelButtonIndex = 2;
 
-    showActionSheetWithOptions({
+    showCustomActionSheetWithOptions({
       options,
       cancelButtonIndex,
-      destructiveButtonIndex
+      destructiveButtonIndex,
     }, (selectedIndex) => {
       switch (selectedIndex) {
         case 0:
@@ -81,8 +82,7 @@ const BottomSheetMarkerList = forwardRef((
             leftChildren={
               <Button 
                 borderRadius="full"
-                colorScheme="gray"
-                variant="subtle"
+                variant="header"
                 size="sm"
                 leftIcon={<SearchIcon />}
                 onPress={() => bottomSheetSearchRef.current.present()}
