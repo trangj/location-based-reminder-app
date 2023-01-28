@@ -1,10 +1,8 @@
-import { Button, CloseIcon, FormControl, HStack, IconButton, Text, useToast, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, IconButton, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useMarkerStore } from '../stores/markerStore'
 import { useGroupStore } from '../stores/groupStore'
 import { Controller, useForm } from 'react-hook-form'
-import { supabase } from '../lib/supabase';
-import { Alert } from 'react-native'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import BottomSheetHeader from './BottomSheetHeader'
@@ -22,8 +20,7 @@ const BottomSheetAddMarker = forwardRef((
   const toast = useToast()
 
   // stores
-  const setMarkers = useMarkerStore(state => state.setMarkers)
-  const markers = useMarkerStore(state => state.markers)
+  const addMarker = useMarkerStore(state => state.addMarker)
   const group = useGroupStore(state => state.group)
 
   // marker form
@@ -34,22 +31,18 @@ const BottomSheetAddMarker = forwardRef((
   });
 
   async function onSubmit({ markerName }) {
-    const {data, error} = await supabase.from('marker').insert([
-      { 
+    try {
+      await addMarker({ 
         group_id: group.id, 
         latitude: newMarker.coordinate.latitude,
         longitude: newMarker.coordinate.longitude,
         name: markerName
-      }
-    ]).select();
-
-    if (error) {
-      Alert.alert("Failed to add marker.")
-    } else {
+      });
       reset();
-      setMarkers([...markers, ...data])
-      toast.show({description: "Successfully added marker."})
+      toast.show({description: "Successfully added marker"})
       dismissAddMarkerSheet();
+    } catch (error) {
+      toast.show({description: error.message})
     }
   }
 

@@ -139,7 +139,6 @@ function MainScreen() {
       <BottomSheetModalProvider>
         <BottomSheetMarkerList 
           ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef, bottomSheetSearchRef }} 
-          markers={markers}
           setCurrentMarkerId={setCurrentMarkerId} 
         />
         <BottomSheetSearch 

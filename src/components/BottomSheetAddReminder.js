@@ -1,16 +1,14 @@
-import { Button, CloseIcon, FormControl, HStack, IconButton, Text, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, IconButton, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { supabase } from '../lib/supabase';
-import { Alert } from 'react-native'
 import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
 import { useRemindersStore } from '../stores/reminderStore';
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal';
 import BottomSheetHeader from './BottomSheetHeader';
 
 const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderRef }) => {
-  const reminders = useRemindersStore(state => state.reminders);
-  const setReminders = useRemindersStore(state => state.setReminders);
+  const addReminder = useRemindersStore(state => state.addReminder);
+  const toast = useToast();
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -19,25 +17,14 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
   });
 
   const onSubmit = async ({ description }) => {
-
-    if (!markerId) {
-      return;
-    }
-    
-    const { data, error } = await supabase
-    .from('reminder')
-    .insert([
-      { marker_id: markerId, description },
-    ])
-    .select('*')
-
-    setReminders([...reminders, ...data]);
-
-    if (error) {
-      Alert.alert(error.message)
-    } else {
+    if (!markerId) return;
+    try {
+      await addReminder(markerId, { description })
+      toast.show({description: "Successfully added reminder"})
       reset();
       bottomSheetAddReminderRef.current.dismiss()
+    } catch (error) {
+      toast.show({description: error.message})
     }
   }
 

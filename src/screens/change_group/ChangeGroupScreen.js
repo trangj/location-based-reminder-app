@@ -40,7 +40,7 @@ function ChangeGroupScreen() {
   async function handleGroupChange(group) {
     if (currentGroup && currentGroup.id === group.id) return;
     setGroup(group);
-    toast.show({description: "Successfully changed group."})
+    toast.show({description: "Successfully changed group"})
   }
 
   function handlePress() {

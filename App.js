@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
-import { NavigationContainer } from '@react-navigation/native';
-import AuthNavigator from './src/navigators/AuthNavigator'
 import { NativeBaseProvider } from "native-base";
-import { Alert, StatusBar } from 'react-native';
+import { Alert } from 'react-native';
 import { supabase } from './src/lib/supabase'
 import { useEffect, useState } from 'react'
 import { useMarkerStore } from './src/stores/markerStore'
@@ -56,8 +54,9 @@ TaskManager.defineTask("MARKER_GEOFENCE", ({ data: { eventType, region }, error 
 
 export default function App() {
   const setSession = useSessionStore(state => state.setSession)
-  const setMarkers = useMarkerStore(state => state.setMarkers)
   const markers = useMarkerStore(state => state.markers)
+  const setMarkers = useMarkerStore(state => state.setMarkers)
+  const fetchMarkers = useMarkerStore(state => state.fetchMarkers)
   const group = useGroupStore(state => state.group);
   const setGroup = useGroupStore(state => state.setGroup);
   const [locationStatus, setLocationStatus] = useState(false)
@@ -92,22 +91,15 @@ export default function App() {
       // if the user signs out clear the group
       if (_event === 'SIGNED_OUT') {
         setGroup(null);
+        setMarkers([]);
       }
     })
   }, [])
 
   // update markers depending on group
   useEffect(() => {
-    (async () => {
-      if (!group) return;
-
-      const {data, error} = await supabase
-          .from('marker')
-          .select('*')
-          .eq('group_id', group.id)
-
-      setMarkers(data);
-    })();
+    if (!group) return;
+    fetchMarkers(group.id);
   }, [group])
 
   // update geofenced markers when user changes groups i.e loads new markers

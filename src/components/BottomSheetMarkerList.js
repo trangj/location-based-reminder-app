@@ -1,10 +1,8 @@
-import { useActionSheet } from '@expo/react-native-action-sheet'
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { Button, Divider, HStack, IconButton, SearchIcon, ThreeDotsIcon, Text, VStack, Icon } from 'native-base'
+import { Button, Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Alert } from 'react-native'
-import { supabase } from '../lib/supabase'
 import { useMarkerStore } from '../stores/markerStore'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
@@ -15,7 +13,6 @@ import { useCustomActionSheet } from '../hooks/useCustomActionSheet'
 
 const BottomSheetMarkerList = forwardRef((
   {
-    markers, 
     setCurrentMarkerId
   }, 
   { 
@@ -25,17 +22,17 @@ const BottomSheetMarkerList = forwardRef((
     bottomSheetSearchRef
   }) => {
 
+  const toast = useToast()
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
-  const setMarkers = useMarkerStore(state => state.setMarkers);
+  const markers = useMarkerStore(state => state.markers);
+  const deleteMarker = useMarkerStore(state => state.deleteMarker);
 
-  async function deleteMarker(markerId) {
-    const { error: reminderError } = await supabase.from('reminder').delete().match({ marker_id: markerId })
-    const { error } = await supabase.from('marker').delete().match({ id: markerId })
-
-    if (error || reminderError) {
-      Alert.alert(error.message)
-    } else {
-      setMarkers(markers.filter(marker => marker.id !== markerId));
+  async function handleDeleteMarker(markerId) {
+    try {
+      await deleteMarker(markerId)
+      toast.show({description: "Successfuly deleted marker"})
+    } catch (error) {
+      toast.show({description: error.message})
     }
   }
 
@@ -63,7 +60,7 @@ const BottomSheetMarkerList = forwardRef((
             {
               text: "Delete",
               style: 'destructive',
-              onPress: () => deleteMarker(markerId)
+              onPress: () => handleDeleteMarker(markerId)
             }
           ])
           break;

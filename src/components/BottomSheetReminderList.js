@@ -1,11 +1,8 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { AddIcon, Button, Checkbox, CloseIcon, DeleteIcon, Divider, HStack, IconButton, Text, VStack } from 'native-base'
+import { AddIcon, Checkbox, CloseIcon, Divider, IconButton, Text, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
-import { Alert } from 'react-native'
-import { supabase } from '../lib/supabase'
-import { useMarkerStore } from '../stores/markerStore'
 import { useRemindersStore } from '../stores/reminderStore'
 import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
 import ListItem from '../ui/ListItem'
@@ -20,50 +17,36 @@ const BottomSheetMarkerList = forwardRef((
     bottomSheetReminderListRef,
     bottomSheetAddReminderRef
   }) => {
+  const toast = useToast();
 
   // stores
   const reminders = useRemindersStore(state => state.reminders);
-  const setReminders = useRemindersStore(state => state.setReminders);
-  const markers = useMarkerStore(state => state.markers);
-  const setMarkers = useMarkerStore(state => state.setMarkers);
+  const fetchReminders = useRemindersStore(state => state.fetchReminders);
+  const changeReminderStatus = useRemindersStore(state => state.changeReminderStatus);
+  const deleteReminder = useRemindersStore(state => state.deleteReminder);
 
   // fetch reminders on load
   useEffect(() => {
-    async function fetchReminders() {
-      const {data, error} = await supabase.from('reminder').select('*').eq('marker_id', markerId);
-      setReminders(data);
-    }
-
     if (markerId) {
-      fetchReminders();
+      fetchReminders(markerId);
     }
   }, [markerId])
 
-  async function changeReminderStatus(id, checked) {
-    const { data } = await supabase
-      .from('reminder')
-      .update({
-        completed_at: checked ? (new Date()).toISOString() : null,
-      })
-      .match({ id })
-      .select();
-      setReminders(
-        reminders.map(reminder => {
-          if (reminder.id === id) {
-            reminder.completed_at = data[0].completed_at;
-          }
-          return reminder;
-        })
-      );
+  async function handleChangeReminderStatus(id, checked) {
+    try {
+      await changeReminderStatus(id, checked)
+    } catch (error) {
+      toast.show({description: error.message})
+
+    }
   } 
 
-  async function deleteReminder(id) {
-    const { error } = await supabase.from('reminder').delete().match({ id })
-
-    if (error) {
-      Alert.alert(error.message)
-    } else {
-      setReminders(reminders.filter(reminder => reminder.id !== id));
+  async function handleDeleteReminder(id) {
+    try {
+      await deleteReminder(id)
+      toast.show({description: "Successfully deleted reminder"})
+    } catch (error) {
+      toast.show({description: error.message})
     }
   }
   
@@ -102,7 +85,7 @@ const BottomSheetMarkerList = forwardRef((
             <Checkbox
               isChecked={!!reminder.completed_at}
               accessibilityLabel="Reminder completion status"
-              onChange={checked => changeReminderStatus(reminder.id, checked)}
+              onChange={checked => handleChangeReminderStatus(reminder.id, checked)}
               mr="4"
               ml="1"
             />
@@ -119,7 +102,7 @@ const BottomSheetMarkerList = forwardRef((
               size="sm"
               colorScheme="gray"
               icon={<CloseIcon/>}
-              onPress={() => deleteReminder(reminder.id)}
+              onPress={() => handleDeleteReminder(reminder.id)}
             />
           </ListItem>
         )}
