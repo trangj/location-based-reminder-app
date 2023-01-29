@@ -3,13 +3,15 @@ import dayjs from 'dayjs'
 import { Button, Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Alert } from 'react-native'
-import { useMarkerStore } from '../stores/markerStore'
-import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
-import ListItem from '../ui/ListItem'
-import EmptyMarkerList from './placeholders/EmptyMarkerList'
+import { useMarkerStore } from '../../stores/markerStore'
+import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal'
+import ListItem from '../../ui/ListItem'
+import EmptyMarkerList from '../placeholders/EmptyMarkerList'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import BottomSheetHeader from './BottomSheetHeader'
-import { useCustomActionSheet } from '../hooks/useCustomActionSheet'
+import { useCustomActionSheet } from '../../hooks/useCustomActionSheet'
+import ListSkeleton from '../placeholders/ListSkeleton'
+import { useGroupStore } from '../../stores/groupStore'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -25,7 +27,10 @@ const BottomSheetMarkerList = forwardRef((
   const toast = useToast()
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   const markers = useMarkerStore(state => state.markers);
+  const loading = useMarkerStore(state => state.loading);
+  const fetchMarkers = useMarkerStore(state => state.fetchMarkers);
   const deleteMarker = useMarkerStore(state => state.deleteMarker);
+  const group = useGroupStore(state => state.group)
 
   async function handleDeleteMarker(markerId) {
     try {
@@ -77,22 +82,31 @@ const BottomSheetMarkerList = forwardRef((
           <BottomSheetHeader
             text="Markers"
             leftChildren={
-              <Button 
-                borderRadius="full"
-                variant="header"
-                size="sm"
-                leftIcon={<SearchIcon />}
-                onPress={() => bottomSheetSearchRef.current.present()}
-              >
-                Search Map
-              </Button>
+              <>
+                <IconButton 
+                  borderRadius="full"
+                  variant="header"
+                  size="sm"
+                  icon={<Icon as={Ionicons} name="refresh" size="sm" />}
+                  onPress={() => fetchMarkers(group.id)}
+                />
+                <Button 
+                  borderRadius="full"
+                  variant="header"
+                  size="sm"
+                  leftIcon={<SearchIcon />}
+                  onPress={() => bottomSheetSearchRef.current.present()}
+                >
+                  Search Map
+                </Button>
+              </>
             }
           />
         }
         data={markers}
         keyExtractor={(marker) => marker.id}
         ItemSeparatorComponent={() => (<Divider />)}
-        ListEmptyComponent={EmptyMarkerList}
+        ListEmptyComponent={loading ? ListSkeleton : EmptyMarkerList}
         renderItem={({item}) => (
           <ListItem
             onPress={() => 

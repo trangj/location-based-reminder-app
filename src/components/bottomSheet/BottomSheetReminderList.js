@@ -1,13 +1,15 @@
 import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { AddIcon, Checkbox, CloseIcon, Divider, IconButton, Text, useToast, VStack } from 'native-base'
+import { AddIcon, Checkbox, CloseIcon, Divider, Icon, IconButton, Text, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
-import { useRemindersStore } from '../stores/reminderStore'
-import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
-import ListItem from '../ui/ListItem'
+import { useRemindersStore } from '../../stores/reminderStore'
+import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal'
+import ListItem from '../../ui/ListItem'
 import BottomSheetHeader from './BottomSheetHeader'
-import EmptyReminderList from './placeholders/EmptyReminderList'
+import EmptyReminderList from '../placeholders/EmptyReminderList'
+import ListSkeleton from '../placeholders/ListSkeleton'
+import Ionicons from '@expo/vector-icons/Ionicons'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -21,6 +23,7 @@ const BottomSheetMarkerList = forwardRef((
 
   // stores
   const reminders = useRemindersStore(state => state.reminders);
+  const loading = useRemindersStore(state => state.loading);
   const fetchReminders = useRemindersStore(state => state.fetchReminders);
   const changeReminderStatus = useRemindersStore(state => state.changeReminderStatus);
   const deleteReminder = useRemindersStore(state => state.deleteReminder);
@@ -62,6 +65,13 @@ const BottomSheetMarkerList = forwardRef((
                   borderRadius="full"
                   variant="header"
                   size="sm"
+                  icon={<Icon as={Ionicons} name="refresh" size="sm" />}
+                  onPress={() => fetchReminders(markerId)}
+                />
+                <IconButton 
+                  borderRadius="full"
+                  variant="header"
+                  size="sm"
                   icon={<AddIcon />}
                   onPress={() => bottomSheetAddReminderRef.current.present()}
                 />
@@ -77,7 +87,7 @@ const BottomSheetMarkerList = forwardRef((
           />
         }
         data={reminders}
-        ListEmptyComponent={EmptyReminderList}
+        ListEmptyComponent={loading ? ListSkeleton : EmptyReminderList}
         keyExtractor={(reminder) => reminder.id}
         ItemSeparatorComponent={() => (<Divider />)}
         renderItem={({item: reminder}) => (

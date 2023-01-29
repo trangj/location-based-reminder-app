@@ -10,30 +10,35 @@ import { useSessionStore } from '../../stores/sessionStore';
 import ListItem from '../../ui/ListItem';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Alert } from 'react-native';
+import CustomRefreshControl from '../../ui/CustomRefreshControl';
+import ListSkeleton from '../../components/placeholders/ListSkeleton';
 
 function ChangeGroupScreen() {
   const [groups, setGroups] = useState([])
+  const [loading, setLoading] = useState(false)
   const user = useSessionStore(state => state.user);
   const setGroup = useGroupStore(state => state.setGroup);
   const currentGroup = useGroupStore(state => state.group);
   const navigation = useNavigation();
   const toast = useToast()
   const { showActionSheetWithOptions } = useActionSheet();
+  
+  async function fetchGroups() {
+    setLoading(true)
+    const {data, error} = await supabase
+      .from('group_membership')
+      .select('group(*)')
+      .eq('user_id', user.id)
+    setLoading(false)
+
+    if (error) {
+      toast.show({description: "Failed to fetch groups."})
+    } else {
+      setGroups(data)
+    }
+  }
 
   useEffect(() => {
-    async function fetchGroups() {
-      const {data, error} = await supabase
-        .from('group_membership')
-        .select('group(*)')
-        .eq('user_id', user.id)
-
-      if (error) {
-        toast.show({description: "Failed to fetch groups."})
-      } else {
-        setGroups(data)
-      }
-    }
-
     fetchGroups();
   }, [])
 
@@ -78,7 +83,8 @@ function ChangeGroupScreen() {
       <FlatList 
         data={groups}
         ItemSeparatorComponent={() => (<Divider />)}
-        ListEmptyComponent={EmptyChangeGroupList}
+        ListEmptyComponent={loading ? ListSkeleton : EmptyChangeGroupList}
+        refreshControl={<CustomRefreshControl refreshing={loading} onRefresh={fetchGroups} />}
         renderItem={({item: group}) => (
           <ListItem 
           key={group.group.id}

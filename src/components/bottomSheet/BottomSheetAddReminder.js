@@ -1,46 +1,28 @@
 import { Button, CloseIcon, FormControl, IconButton, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
-import { useMarkerStore } from '../stores/markerStore'
-import { useGroupStore } from '../stores/groupStore'
 import { Controller, useForm } from 'react-hook-form'
-import BottomSheetInputWrapper from '../ui/BottomSheetInputWrapper'
-import CustomBottomSheetModal from '../ui/CustomBottomSheetModal'
-import BottomSheetHeader from './BottomSheetHeader'
+import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper'
+import { useRemindersStore } from '../../stores/reminderStore';
+import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal';
+import BottomSheetHeader from './BottomSheetHeader';
 
-const BottomSheetAddMarker = forwardRef((
-  {
-    dismissAddMarkerSheet,
-    newMarker
-  },
-  { 
-    bottomSheetAddMarkerRef
-  }) => {
+const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderRef }) => {
+  const addReminder = useRemindersStore(state => state.addReminder);
+  const toast = useToast();
 
-  // toast
-  const toast = useToast()
-
-  // stores
-  const addMarker = useMarkerStore(state => state.addMarker)
-  const group = useGroupStore(state => state.group)
-
-  // marker form
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
-      markerName: '',
+      description: '',
     }
   });
 
-  async function onSubmit({ markerName }) {
+  const onSubmit = async ({ description }) => {
+    if (!markerId) return;
     try {
-      await addMarker({ 
-        group_id: group.id, 
-        latitude: newMarker.coordinate.latitude,
-        longitude: newMarker.coordinate.longitude,
-        name: markerName
-      });
+      await addReminder(markerId, { description })
+      toast.show({description: "Successfully added reminder"})
       reset();
-      toast.show({description: "Successfully added marker"})
-      dismissAddMarkerSheet();
+      bottomSheetAddReminderRef.current.dismiss()
     } catch (error) {
       toast.show({description: error.message})
     }
@@ -48,28 +30,27 @@ const BottomSheetAddMarker = forwardRef((
 
   return (
     <CustomBottomSheetModal
-      ref={bottomSheetAddMarkerRef}
+      ref={bottomSheetAddReminderRef}
       keyboardBlurBehavior={'restore'}
       keyboardBehavior="extend"
       android_keyboardInputMode="adjustResize"
-      onDismiss={() => dismissAddMarkerSheet()}
     >
       <VStack>
         <BottomSheetHeader
-          text="Add Marker"
+          text="Add Reminder"
           leftChildren={
             <IconButton 
               borderRadius="full"
               variant="header"
               size="sm"
               icon={<CloseIcon />}
-              onPress={() => dismissAddMarkerSheet()}
+              onPress={() => bottomSheetAddReminderRef.current.dismiss()}
             />
           }
         />
         <VStack space="2" p="3" pt="0">
-          <FormControl isInvalid={errors.markerName}>
-            <FormControl.Label>Marker Name</FormControl.Label>
+          <FormControl isInvalid={errors.description}>
+            <FormControl.Label>Description</FormControl.Label>
             <Controller
               control={control}
               rules={{ required: true }}
@@ -80,14 +61,14 @@ const BottomSheetAddMarker = forwardRef((
                   value={value}
                 />
               )}
-              name="markerName"
+              name="description"
             />
             <FormControl.ErrorMessage>
-              Marker name is required.
+              Reminder description is required.
             </FormControl.ErrorMessage>
           </FormControl>
           <Button onPress={handleSubmit(onSubmit)}>
-            Add Marker
+            Add Reminder
           </Button>
         </VStack>
       </VStack>

@@ -5,14 +5,14 @@ import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { useMarkerStore } from '../../stores/markerStore';
 import { useEffect, useState } from 'react';
 import * as Location from 'expo-location';
-import BottomSheetMarkerList from '../../components/BottomSheetMarkerList';
-import BottomSheetAddMarker from '../../components/BottomSheetAddMarker';
-import BottomSheetReminderList from '../../components/BottomSheetReminderList';
-import BottomSheetAddReminder from '../../components/BottomSheetAddReminder';
+import BottomSheetMarkerList from '../../components/bottomSheet/BottomSheetMarkerList';
+import BottomSheetAddMarker from '../../components/bottomSheet/BottomSheetAddMarker';
+import BottomSheetReminderList from '../../components/bottomSheet/BottomSheetReminderList';
+import BottomSheetAddReminder from '../../components/bottomSheet/BottomSheetAddReminder';
+import BottomSheetSearch from '../../components/bottomSheet/BottomSheetSearch';
 import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
 import { useColorMode } from 'native-base';
-import BottomSheetSearch from '../../components/BottomSheetSearch';
 import { darkModeMapStyle } from '../../lib/theme';
 
 function MainScreen() {

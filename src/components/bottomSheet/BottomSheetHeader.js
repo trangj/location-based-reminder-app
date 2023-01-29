@@ -11,6 +11,8 @@ const BottomSheetHeader = ({ text, leftChildren }) => {
     >
       <Text fontSize="2xl" fontWeight="bold">{text}</Text>
       <HStack
+        alignItems="center"
+        justifyContent="center"
         ml="auto"
         space="2"
       >

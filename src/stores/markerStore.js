@@ -6,7 +6,7 @@ export const useMarkerStore = create((set, get) => ({
   loading: false,
   setMarkers: (markers) => set({ markers }),
   fetchMarkers: async (groupId) => {
-    set({loading: true})
+    set({loading: true, markers: []})
     const { data } = await supabase
           .from('marker')
           .select('*')

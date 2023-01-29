@@ -5,7 +5,7 @@ export const useRemindersStore = create((set, get) => ({
   reminders: [],
   loading: false,
   fetchReminders: async (markerId) => {
-    set({loading: true})
+    set({loading: true, reminders: []})
     const { data, error } = await supabase.from('reminder').select('*').eq('marker_id', markerId);
     if (error) throw Error("Failed to fetch reminders")
     set({loading: false, reminders: data});
