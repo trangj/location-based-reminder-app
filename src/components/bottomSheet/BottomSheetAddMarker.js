@@ -49,47 +49,42 @@ const BottomSheetAddMarker = forwardRef((
   return (
     <CustomBottomSheetModal
       ref={bottomSheetAddMarkerRef}
-      keyboardBlurBehavior={'restore'}
-      keyboardBehavior="extend"
-      android_keyboardInputMode="adjustResize"
       onDismiss={() => dismissAddMarkerSheet()}
-    >
-      <VStack>
+      header={
         <BottomSheetHeader
           text="Add Marker"
           leftChildren={
             <IconButton 
-              borderRadius="full"
               variant="header"
-              size="sm"
-              icon={<CloseIcon />}
+              icon={<CloseIcon size="sm"/>}
               onPress={() => dismissAddMarkerSheet()}
             />
           }
         />
-        <VStack space="2" p="3" pt="0">
-          <FormControl isInvalid={errors.markerName}>
-            <FormControl.Label>Marker Name</FormControl.Label>
-            <Controller
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <BottomSheetInputWrapper
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="markerName"
-            />
-            <FormControl.ErrorMessage>
-              Marker name is required.
-            </FormControl.ErrorMessage>
-          </FormControl>
-          <Button onPress={handleSubmit(onSubmit)}>
-            Add Marker
-          </Button>
-        </VStack>
+      }
+    >
+      <VStack space="6" p="3" pt="0">
+        <FormControl isInvalid={errors.markerName}>
+          <FormControl.Label>Marker Name</FormControl.Label>
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <BottomSheetInputWrapper
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="markerName"
+          />
+          <FormControl.ErrorMessage>
+            Marker name is required.
+          </FormControl.ErrorMessage>
+        </FormControl>
+        <Button onPress={handleSubmit(onSubmit)}>
+          Add Marker
+        </Button>
       </VStack>
     </CustomBottomSheetModal>
   )

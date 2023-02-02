@@ -1,4 +1,3 @@
-import { useActionSheet } from '@expo/react-native-action-sheet';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import { FlatList, useToast, Text, Divider, VStack, Button, IconButton, Icon } from 'native-base';
@@ -12,6 +11,7 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import { Alert } from 'react-native';
 import CustomRefreshControl from '../../ui/CustomRefreshControl';
 import ListSkeleton from '../../components/placeholders/ListSkeleton';
+import { useCustomActionSheet } from '../../hooks/useCustomActionSheet'
 
 function ChangeGroupScreen() {
   const [groups, setGroups] = useState([])
@@ -21,7 +21,7 @@ function ChangeGroupScreen() {
   const currentGroup = useGroupStore(state => state.group);
   const navigation = useNavigation();
   const toast = useToast()
-  const { showActionSheetWithOptions } = useActionSheet();
+  const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   
   async function fetchGroups() {
     setLoading(true)
@@ -53,7 +53,7 @@ function ChangeGroupScreen() {
     const destructiveButtonIndex = 0;
     const cancelButtonIndex = 1;
 
-    showActionSheetWithOptions({
+    showCustomActionSheetWithOptions({
       options,
       cancelButtonIndex,
       destructiveButtonIndex

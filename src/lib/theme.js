@@ -20,34 +20,20 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         rounded: 'lg'
-      },
-      variants: {
-        header: ({ colorMode }) => ({
-          bg: colorMode === 'dark' ? 'gray.700' : 'gray.200',
-          _pressed: {
-            bg: colorMode === 'dark' ? 'gray.600' : 'gray.300'
-          },
-          _icon: {
-            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
-          },
-          _text: {
-            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
-          },
-        })
       }
     },
     IconButton: {
       baseStyle: {
-        rounded: 'lg'
+        rounded: 'full'
       },
       variants: {
         header: ({ colorMode }) => ({
-          bg: colorMode === 'dark' ? 'gray.700' : 'gray.200',
+          bg: colorMode === 'dark' ? 'gray.800' : 'gray.100',
           _pressed: {
-            bg: colorMode === 'dark' ? 'gray.600' : 'gray.300'
+            bg: colorMode === 'dark' ? 'gray.700' : 'gray.200'
           },
           _icon: {
-            color: colorMode === 'dark' ? 'gray.300' : 'gray.600'
+            color: colorMode === 'dark' ? 'gray.400' : 'gray.600'
           }
         })
       }
@@ -55,6 +41,23 @@ export const theme = extendTheme({
     Input: {
       baseStyle: {
         rounded: 'lg'
+      },
+      defaultProps: {
+        size: 'lg'
+      },
+      variants: {
+        alt: (props) => {
+          const style = props.theme.components["Input"].variants.filled(props);
+          return {
+            ...style,
+            "bg": "gray.100",
+            "borderColor": "gray.100",
+            _dark: {
+              "bg": "gray.800",
+              "borderColor": "gray.800",
+            }
+          }
+        }
       }
     },
     Checkbox: {
@@ -66,7 +69,15 @@ export const theme = extendTheme({
       baseStyle: {
         fontSize: 'md'
       }
-    }
+    },
+    Divider: {
+      baseStyle: {
+        bg: 'gray.100',
+        _dark: {
+          bg: 'gray.800'
+        }
+      }
+    },
   },
   config: {
     useSystemColorMode: true

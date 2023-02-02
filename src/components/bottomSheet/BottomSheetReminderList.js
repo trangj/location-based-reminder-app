@@ -54,38 +54,34 @@ const BottomSheetMarkerList = forwardRef((
   }
   
   return (
-    <CustomBottomSheetModal ref={bottomSheetReminderListRef}>
+    <CustomBottomSheetModal 
+      ref={bottomSheetReminderListRef}
+      header={
+        <BottomSheetHeader
+          text="Reminders"
+          leftChildren={
+            <>
+              <IconButton 
+                variant="header"
+                icon={<Icon as={Ionicons} name="refresh" size="sm" />}
+                onPress={() => fetchReminders(markerId)}
+              />
+              <IconButton 
+                variant="header"
+                icon={<AddIcon size="sm" />}
+                onPress={() => bottomSheetAddReminderRef.current.present()}
+              />
+              <IconButton 
+                variant="header"
+                icon={<CloseIcon size="sm" />}
+                onPress={() => bottomSheetReminderListRef.current.dismiss()}
+              />
+            </>
+          }
+        />
+      }
+    >
       <BottomSheetFlatList
-        ListHeaderComponent={
-          <BottomSheetHeader
-            text="Reminders"
-            leftChildren={
-              <>
-                <IconButton 
-                  borderRadius="full"
-                  variant="header"
-                  size="sm"
-                  icon={<Icon as={Ionicons} name="refresh" size="sm" />}
-                  onPress={() => fetchReminders(markerId)}
-                />
-                <IconButton 
-                  borderRadius="full"
-                  variant="header"
-                  size="sm"
-                  icon={<AddIcon />}
-                  onPress={() => bottomSheetAddReminderRef.current.present()}
-                />
-                <IconButton 
-                  borderRadius="full"
-                  variant="header"
-                  size="sm"
-                  icon={<CloseIcon />}
-                  onPress={() => bottomSheetReminderListRef.current.dismiss()}
-                />
-              </>
-            }
-          />
-        }
         data={reminders}
         ListEmptyComponent={loading ? ListSkeleton : EmptyReminderList}
         keyExtractor={(reminder) => reminder.id}
@@ -109,7 +105,6 @@ const BottomSheetMarkerList = forwardRef((
             </VStack>
             <IconButton 
               ml="auto"
-              size="sm"
               colorScheme="gray"
               icon={<CloseIcon/>}
               onPress={() => handleDeleteReminder(reminder.id)}

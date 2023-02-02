@@ -9,7 +9,6 @@ import BottomSheetMarkerList from '../../components/bottomSheet/BottomSheetMarke
 import BottomSheetAddMarker from '../../components/bottomSheet/BottomSheetAddMarker';
 import BottomSheetReminderList from '../../components/bottomSheet/BottomSheetReminderList';
 import BottomSheetAddReminder from '../../components/bottomSheet/BottomSheetAddReminder';
-import BottomSheetSearch from '../../components/bottomSheet/BottomSheetSearch';
 import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
 import { useColorMode } from 'native-base';
@@ -36,7 +35,6 @@ function MainScreen() {
   const bottomSheetAddMarkerRef = useRef(null)
   const bottomSheetReminderListRef = useRef(null)
   const bottomSheetAddReminderRef = useRef(null)
-  const bottomSheetSearchRef = useRef(null)
 
   // handling actions
   function handleLongPress({ nativeEvent }) {
@@ -138,12 +136,9 @@ function MainScreen() {
       </MapView>
       <BottomSheetModalProvider>
         <BottomSheetMarkerList 
-          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef, bottomSheetSearchRef }} 
+          ref={{ bottomSheetMarkerListRef, mapRef, bottomSheetReminderListRef, bottomSheetAddMarkerRef }} 
           setCurrentMarkerId={setCurrentMarkerId} 
-        />
-        <BottomSheetSearch 
-          ref={{ bottomSheetSearchRef, bottomSheetAddMarkerRef, mapRef }}
-          setNewMarker={setNewMarker} 
+          setNewMarker={setNewMarker}
         />
         <BottomSheetAddMarker
           ref={{ bottomSheetAddMarkerRef }}

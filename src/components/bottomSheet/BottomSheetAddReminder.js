@@ -31,46 +31,41 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
   return (
     <CustomBottomSheetModal
       ref={bottomSheetAddReminderRef}
-      keyboardBlurBehavior={'restore'}
-      keyboardBehavior="extend"
-      android_keyboardInputMode="adjustResize"
-    >
-      <VStack>
+      header={
         <BottomSheetHeader
           text="Add Reminder"
           leftChildren={
             <IconButton 
-              borderRadius="full"
               variant="header"
-              size="sm"
-              icon={<CloseIcon />}
+              icon={<CloseIcon size="sm" />}
               onPress={() => bottomSheetAddReminderRef.current.dismiss()}
             />
           }
         />
-        <VStack space="2" p="3" pt="0">
-          <FormControl isInvalid={errors.description}>
-            <FormControl.Label>Description</FormControl.Label>
-            <Controller
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <BottomSheetInputWrapper
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                />
-              )}
-              name="description"
-            />
-            <FormControl.ErrorMessage>
-              Reminder description is required.
-            </FormControl.ErrorMessage>
-          </FormControl>
-          <Button onPress={handleSubmit(onSubmit)}>
-            Add Reminder
-          </Button>
-        </VStack>
+      }
+    >
+      <VStack space="6" p="3" pt="0">
+        <FormControl isInvalid={errors.description}>
+          <FormControl.Label>Description</FormControl.Label>
+          <Controller
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <BottomSheetInputWrapper
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="description"
+          />
+          <FormControl.ErrorMessage>
+            Reminder description is required.
+          </FormControl.ErrorMessage>
+        </FormControl>
+        <Button onPress={handleSubmit(onSubmit)}>
+          Add Reminder
+        </Button>
       </VStack>
     </CustomBottomSheetModal>
   )
