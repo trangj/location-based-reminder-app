@@ -11,7 +11,7 @@ const Tabs = createBottomTabNavigator();
 
 const TabsNavigator = () => {
   const { colors } = useTheme()
-  const iconColor = useColorModeValue(colors.gray[600], colors.gray[400])
+  const iconColor = useColorModeValue(colors.gray[500], colors.gray[400])
   const iconColorActive = useColorModeValue(colors.black, colors.white)
 
   return (

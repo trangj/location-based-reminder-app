@@ -39,7 +39,7 @@ export const theme = extendTheme({
             }
           },
           _icon: {
-            color: 'gray.600',
+            color: 'gray.500',
             _dark: {
               color: 'gray.400'
             }
@@ -83,7 +83,7 @@ export const theme = extendTheme({
       variants: {
         alt: {
           fontSize: 'sm',
-          color: 'gray.600',
+          color: 'gray.500',
           _dark: {
             color: 'gray.400'
           }
