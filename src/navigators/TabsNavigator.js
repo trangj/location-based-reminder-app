@@ -5,15 +5,17 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons'
 import ChangeGroupNavigator from './ChangeGroupNavigator';
 import MainScreen from '../screens/tabs/MainScreen';
-import { useTheme } from 'native-base';
+import { useColorModeValue, useTheme } from 'native-base';
 
 const Tabs = createBottomTabNavigator();
 
 const TabsNavigator = () => {
   const { colors } = useTheme()
+  const iconColor = useColorModeValue(colors.gray[600], colors.gray[400])
+  const iconColorActive = useColorModeValue(colors.black, colors.white)
 
   return (
-    <Tabs.Navigator initialRouteName='MainNavigator' screenOptions={{ tabBarActiveTintColor: colors.blue[600], tabBarInactiveTintColor: colors.gray[500] }}>
+    <Tabs.Navigator initialRouteName='MainNavigator' screenOptions={{ tabBarActiveTintColor: iconColorActive, tabBarInactiveTintColor: iconColor }}>
       <Tabs.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, title: "Map", tabBarIcon: ({color, size}) => <Ionicons name='navigate-circle' color={color} size={size} />}} />
       <Tabs.Screen name="GroupNavigator" component={GroupNavigator} options={{ headerShown: false, title: "Current Group", tabBarIcon: ({color, size}) => <Ionicons name='people' color={color} size={size} />}} />
       <Tabs.Screen name="ChangeGroupNavigator" component={ChangeGroupNavigator} options={{ headerShown: false, title: 'Change Group', tabBarIcon: ({color, size}) => <Ionicons name='swap-horizontal' color={color} size={size} />}} />

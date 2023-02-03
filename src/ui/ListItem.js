@@ -6,7 +6,7 @@ const ListItem = ({ children, onPress, onLongPress, active, enablePress = true, 
     <Pressable onPress={onPress} onLongPress={onLongPress} w="full">
       {({isPressed}) => (
         <Box 
-          bg={enablePress && (isPressed || active) ? "gray.200" : "white"}
+          bg={enablePress && (isPressed || active) ? "gray.100" : "white"}
           w="full"
           p="3"
           alignItems="center"

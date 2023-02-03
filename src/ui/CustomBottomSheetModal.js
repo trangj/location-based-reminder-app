@@ -1,10 +1,10 @@
 import { BottomSheetBackdrop, BottomSheetModal, useBottomSheet } from '@gorhom/bottom-sheet';
-import { useColorMode, useTheme } from 'native-base';
+import { useColorMode, useColorModeValue, useTheme } from 'native-base';
 import React from 'react'
 import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { forwardRef } from 'react'
-import Animated, { interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { color, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CustomBottomSheetModalContentWrapper = ({ children }) => {
@@ -26,8 +26,8 @@ const CustomBottomSheetModalContentWrapper = ({ children }) => {
 }
 
 const CustomBottomSheetModal = forwardRef(({ children, header, ...props }, ref) => {
-  const { colorMode } = useColorMode()
   const { colors } = useTheme();
+  const backgroundColor = useColorModeValue('white', colors.gray[900])
   const insets = useSafeAreaInsets();
 
   const snapPoints = useMemo(() => ['10%', '40%', '100%'], []);
@@ -49,7 +49,7 @@ const CustomBottomSheetModal = forwardRef(({ children, header, ...props }, ref) 
       enablePanDownToClose={false}
       topInset={insets.top}
       backgroundStyle={{
-        backgroundColor: colorMode === "dark" ? colors.gray[900] : "white"
+        backgroundColor: backgroundColor
       }}
       handleIndicatorStyle={{
         backgroundColor: colors.gray[500]

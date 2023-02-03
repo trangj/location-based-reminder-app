@@ -113,7 +113,6 @@ const BottomSheetMarkerList = forwardRef((
                 setSearchView(false)
                 setNewMarker(null)
                 setSearchQuery("")
-                bottomSheetMarkerListRef.current.snapToIndex(1)
                 Keyboard.dismiss();
               }}
             />
@@ -171,7 +170,7 @@ const BottomSheetMarkerList = forwardRef((
                 <Text fontWeight="medium">
                   {item.name}
                 </Text>
-                <Text fontSize="sm" color="gray.500">
+                <Text variant="alt">
                   {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
                 </Text>
               </VStack>

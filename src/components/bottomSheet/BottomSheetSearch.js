@@ -87,7 +87,7 @@ const BottomSheetSearch = forwardRef((
             <Text fontWeight="medium">
               {item.name}
             </Text>
-            <Text fontSize="sm" color="gray.500" numberOfLines={1}>
+            <Text variant="alt" numberOfLines={1}>
               {item.formatted_address}
             </Text>
           </VStack>

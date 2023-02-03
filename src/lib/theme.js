@@ -27,20 +27,31 @@ export const theme = extendTheme({
         rounded: 'full'
       },
       variants: {
-        header: ({ colorMode }) => ({
-          bg: colorMode === 'dark' ? 'gray.800' : 'gray.100',
+        header: {
+          bg: 'gray.100',
+          _dark: {
+            bg: 'gray.800'
+          },
           _pressed: {
-            bg: colorMode === 'dark' ? 'gray.700' : 'gray.200'
+            bg: 'gray.200',
+            _dark: {
+              bg: 'gray.700'
+            }
           },
           _icon: {
-            color: colorMode === 'dark' ? 'gray.400' : 'gray.600'
+            color: 'gray.600',
+            _dark: {
+              color: 'gray.400'
+            }
           }
-        })
+        },
       }
     },
     Input: {
       baseStyle: {
-        rounded: 'lg'
+        rounded: 'lg',
+        py: 0,
+        h: 10
       },
       defaultProps: {
         size: 'lg'
@@ -68,6 +79,15 @@ export const theme = extendTheme({
     Text: {
       baseStyle: {
         fontSize: 'md'
+      },
+      variants: {
+        alt: {
+          fontSize: 'sm',
+          color: 'gray.600',
+          _dark: {
+            color: 'gray.400'
+          }
+        },
       }
     },
     Divider: {

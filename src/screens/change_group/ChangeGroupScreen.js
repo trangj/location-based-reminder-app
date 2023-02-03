@@ -96,11 +96,11 @@ function ChangeGroupScreen() {
               <Text fontWeight="medium">
                 {group.group.group_name}
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text variant="alt">
                 Joined {dayjs(group.group.created_at).format('DD-MM-YYYY')} {'\u2022'} {group.group.number_of_members} Member{group.group.number_of_members === 1 ? '' : 's'}
               </Text>
             </VStack>
-            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" />} size="sm" colorScheme="gray" onPress={() => handlePress()} />
+            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" />} colorScheme="gray" onPress={() => handlePress()} />
           </ListItem>
         )}
       />

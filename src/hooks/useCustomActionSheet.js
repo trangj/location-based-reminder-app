@@ -1,20 +1,23 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import { useColorMode, useTheme } from "native-base";
+import { useColorModeValue, useTheme } from "native-base";
 
 export function useCustomActionSheet() {
   const { showActionSheetWithOptions } = useActionSheet();
   const { colors } = useTheme();
-  const { colorMode } = useColorMode();
+  
+  const userInterfaceStyle = useColorModeValue('light', 'dark')
+  const backgroundColor = useColorModeValue('white', colors.gray[900])
+  const color = useColorModeValue('black', 'white')
 
   function showCustomActionSheetWithOptions(options, callback) {
     showActionSheetWithOptions({
       ...options,
-      userInterfaceStyle: colorMode === 'dark' ? 'dark' : 'light',
+      userInterfaceStyle: userInterfaceStyle,
       containerStyle: {
-        backgroundColor: colorMode === 'dark' ? colors.gray[900] : 'white'
+        backgroundColor: backgroundColor
       },
       textStyle: {
-        color: colorMode === 'dark' ? 'white' : 'black'
+        color: color
       },
       useModal: true
     }, callback);

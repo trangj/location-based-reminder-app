@@ -1,13 +1,11 @@
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
-import { StatusBar, useColorMode, useTheme } from 'native-base'
+import { StatusBar, useColorMode, useColorModeValue, useTheme } from 'native-base'
 import React, { useMemo } from 'react'
 import AuthNavigator from './navigators/AuthNavigator'
 
 
 const Root = () => {
-  const { colorMode } = useColorMode()
   const { colors } = useTheme();
-
   const CustomDarkTheme = useMemo(() => ({
     ...DarkTheme,
     colors: {
@@ -25,12 +23,16 @@ const Root = () => {
     }
   }), [])
 
+  const theme = useColorModeValue(CustomDefaultTheme, CustomDarkTheme)
+  const backgroundColor = useColorModeValue('white', 'black')
+  const barStyle = useColorModeValue('dark-content', 'light-content')
+
   return (
-    <NavigationContainer theme={colorMode === "dark" ? CustomDarkTheme : CustomDefaultTheme}>
+    <NavigationContainer theme={theme}>
       <AuthNavigator />
       <StatusBar 
-        backgroundColor={colorMode === "dark" ? "black" : "white"}
-        barStyle={colorMode === "dark" ? "light-content" : "dark-content"}
+        backgroundColor={backgroundColor}
+        barStyle={barStyle}
       />
     </NavigationContainer>
   )

@@ -1,11 +1,11 @@
 import { RefreshControl } from 'react-native'
 import React from 'react'
-import { useColorMode } from 'native-base'
+import { useColorModeValue } from 'native-base'
 
 const CustomRefreshControl = ({...props}) => {
-  const {colorMode} = useColorMode();
+  const tintColor = useColorModeValue('black', 'white')
   return (
-    <RefreshControl {...props} tintColor={colorMode === "dark" ? "white" : "black"} />
+    <RefreshControl {...props} tintColor={tintColor} />
   )
 }
 

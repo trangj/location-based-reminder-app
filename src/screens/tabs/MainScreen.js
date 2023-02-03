@@ -11,11 +11,12 @@ import BottomSheetReminderList from '../../components/bottomSheet/BottomSheetRem
 import BottomSheetAddReminder from '../../components/bottomSheet/BottomSheetAddReminder';
 import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
-import { useColorMode } from 'native-base';
+import { useColorModeValue } from 'native-base';
 import { darkModeMapStyle } from '../../lib/theme';
 
 function MainScreen() {
-  const { colorMode } = useColorMode()
+  const userInterfaceStyle = useColorModeValue('light', 'dark')
+  const customMapStyle = useColorModeValue([], darkModeMapStyle)
 
   // navigation context
   const navigation = useNavigation()
@@ -112,8 +113,8 @@ function MainScreen() {
         onLongPress={handleLongPress}
         onPress={() => dismissAddMarkerSheet()}
         showsUserLocation
-        userInterfaceStyle={colorMode === 'dark' ? 'dark' : 'light'}
-        customMapStyle={colorMode === 'dark' ? darkModeMapStyle : []}
+        userInterfaceStyle={userInterfaceStyle}
+        customMapStyle={customMapStyle}
       >
         {
           markers.map((marker, index) => (

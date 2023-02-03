@@ -99,7 +99,7 @@ const BottomSheetMarkerList = forwardRef((
               <Text strikeThrough={!!reminder.completed_at}>
                 {reminder.description}
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text variant="alt">
                 {dayjs(reminder.created_at).format('DD-MM-YYYY')}
               </Text>
             </VStack>

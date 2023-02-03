@@ -51,7 +51,7 @@ function ViewGroupScreen() {
               <Text fontWeight="medium">
                 {member.profiles.email}
               </Text>
-              <Text fontSize="sm" color="gray.500">
+              <Text variant="alt">
                 Member since {dayjs(member.created_at).format('DD-MM-YYYY')}
               </Text>
             </VStack>
