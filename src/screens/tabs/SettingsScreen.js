@@ -11,6 +11,7 @@ function SettingsScreen() {
   return (
     <View style={styles.container}>
       <Text>Signed in as {user.email}</Text>
+      <Button onPress={() => supabase.auth.resetPasswordForEmail()}>Change Password</Button>
       <Button onPress={() => supabase.auth.signOut()}>Logout</Button>
       <Button onPress={() => toggleColorMode()}>Change Theme</Button>
     </View>
