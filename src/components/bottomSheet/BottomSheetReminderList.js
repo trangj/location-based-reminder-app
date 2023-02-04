@@ -1,6 +1,5 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { AddIcon, Checkbox, CloseIcon, Divider, Icon, IconButton, Text, useToast, VStack } from 'native-base'
+import { AddIcon, Checkbox, CloseIcon, Divider, Icon, IconButton, Text, useColorModeValue, useToast, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
 import { useRemindersStore } from '../../stores/reminderStore'
@@ -10,6 +9,7 @@ import BottomSheetHeader from './BottomSheetHeader'
 import EmptyReminderList from '../placeholders/EmptyReminderList'
 import ListSkeleton from '../placeholders/ListSkeleton'
 import Ionicons from '@expo/vector-icons/Ionicons'
+import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -19,7 +19,9 @@ const BottomSheetMarkerList = forwardRef((
     bottomSheetReminderListRef,
     bottomSheetAddReminderRef
   }) => {
+
   const toast = useToast();
+  const color = useColorModeValue('gray.500', 'gray.400')
 
   // stores
   const reminders = useRemindersStore(state => state.reminders);
@@ -81,7 +83,7 @@ const BottomSheetMarkerList = forwardRef((
         />
       }
     >
-      <BottomSheetFlatList
+      <BottomSheetFlatListWrapper
         data={reminders}
         ListEmptyComponent={loading ? ListSkeleton : EmptyReminderList}
         keyExtractor={(reminder) => reminder.id}
@@ -106,7 +108,7 @@ const BottomSheetMarkerList = forwardRef((
             <IconButton 
               ml="auto"
               colorScheme="gray"
-              icon={<CloseIcon/>}
+              icon={<CloseIcon color={color}/>}
               onPress={() => handleDeleteReminder(reminder.id)}
             />
           </ListItem>

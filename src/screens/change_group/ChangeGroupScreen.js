@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { FlatList, useToast, Text, Divider, VStack, Button, IconButton, Icon } from 'native-base';
+import { FlatList, useToast, Text, Divider, VStack, Button, IconButton, Icon, useColorModeValue } from 'native-base';
 import { useEffect, useState } from 'react';
 import EmptyChangeGroupList from '../../components/placeholders/EmptyChangeGroupList';
 import { supabase } from '../../lib/supabase';
@@ -14,13 +14,17 @@ import ListSkeleton from '../../components/placeholders/ListSkeleton';
 import { useCustomActionSheet } from '../../hooks/useCustomActionSheet'
 
 function ChangeGroupScreen() {
+
   const [groups, setGroups] = useState([])
   const [loading, setLoading] = useState(false)
+
   const user = useSessionStore(state => state.user);
   const setGroup = useGroupStore(state => state.setGroup);
   const currentGroup = useGroupStore(state => state.group);
+
   const navigation = useNavigation();
   const toast = useToast()
+  const color = useColorModeValue('gray.500', 'gray.400')
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   
   async function fetchGroups() {
@@ -100,7 +104,7 @@ function ChangeGroupScreen() {
                 Joined {dayjs(group.group.created_at).format('DD-MM-YYYY')} {'\u2022'} {group.group.number_of_members} Member{group.group.number_of_members === 1 ? '' : 's'}
               </Text>
             </VStack>
-            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" />} colorScheme="gray" onPress={() => handlePress()} />
+            <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" color={color} />} colorScheme="gray" onPress={() => handlePress()} />
           </ListItem>
         )}
       />

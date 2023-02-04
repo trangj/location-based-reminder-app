@@ -1,6 +1,5 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
-import { Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast, HStack, CloseIcon } from 'native-base'
+import { Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast, HStack, CloseIcon, useColorModeValue } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Alert } from 'react-native'
 import { useMarkerStore } from '../../stores/markerStore'
@@ -15,6 +14,7 @@ import BottomSheetSearch from './BottomSheetSearch'
 import { useState } from 'react'
 import { useGroupStore } from '../../stores/groupStore'
 import { Keyboard } from 'react-native'
+import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -30,6 +30,7 @@ const BottomSheetMarkerList = forwardRef((
 
   const toast = useToast()
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
+  const color = useColorModeValue('gray.500', 'gray.400')
   
   const markers = useMarkerStore(state => state.markers);
   const fetchMarkers = useMarkerStore(state => state.fetchMarkers);
@@ -145,7 +146,7 @@ const BottomSheetMarkerList = forwardRef((
           }}
         />
       ) : (
-        <BottomSheetFlatList
+        <BottomSheetFlatListWrapper
           data={markers}
           keyExtractor={(marker) => marker.id}
           ItemSeparatorComponent={() => (<Divider />)}
@@ -174,7 +175,7 @@ const BottomSheetMarkerList = forwardRef((
                   {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
                 </Text>
               </VStack>
-              <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" />} colorScheme="gray" onPress={() => handlePress(item.id)} />
+              <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" color={color} />} colorScheme="gray" onPress={() => handlePress(item.id)} />
             </ListItem>
           )}
         />
