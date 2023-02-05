@@ -16,10 +16,10 @@ const TabsNavigator = () => {
 
   return (
     <Tabs.Navigator initialRouteName='MainNavigator' screenOptions={{ tabBarActiveTintColor: iconColorActive, tabBarInactiveTintColor: iconColor }}>
-      <Tabs.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, title: "Map", tabBarIcon: ({color, size}) => <Ionicons name='navigate-circle' color={color} size={size} />}} />
-      <Tabs.Screen name="GroupNavigator" component={GroupNavigator} options={{ headerShown: false, title: "Current Group", tabBarIcon: ({color, size}) => <Ionicons name='people' color={color} size={size} />}} />
+      <Tabs.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, title: "Map", tabBarIcon: ({focused, color, size}) => <Ionicons name={focused ? 'navigate-circle' : 'navigate-circle-outline'} color={color} size={size} />}} />
+      <Tabs.Screen name="GroupNavigator" component={GroupNavigator} options={{ headerShown: false, title: "Current Group", tabBarIcon: ({focused, color, size}) => <Ionicons name={focused ? 'people' : 'people-outline'} color={color} size={size} />}} />
       <Tabs.Screen name="ChangeGroupNavigator" component={ChangeGroupNavigator} options={{ headerShown: false, title: 'Change Group', tabBarIcon: ({color, size}) => <Ionicons name='swap-horizontal' color={color} size={size} />}} />
-      <Tabs.Screen name="Settings" component={SettingsScreen} options={{tabBarIcon: ({color, size}) => <Ionicons name='settings' color={color} size={size} />}} />
+      <Tabs.Screen name="Settings" component={SettingsScreen} options={{tabBarIcon: ({focused, color, size}) => <Ionicons name={focused ? 'settings' : 'settings-outline'} color={color} size={size} />}} />
     </Tabs.Navigator>
   )
 }

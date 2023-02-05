@@ -99,9 +99,9 @@ const BottomSheetMarkerList = forwardRef((
             flex="1"
             key="searchInput" 
             variant="alt"
-            placeholderTextColor="gray.500"
+            placeholderTextColor={color}
             placeholder="Search Map"
-            InputLeftElement={<SearchIcon ml="3" color="gray.500" />}
+            InputLeftElement={<SearchIcon ml="3" />}
             onChangeText={(text) => setSearchQuery(text)}
             value={searchQuery}
             onFocus={() => setSearchView(true)}

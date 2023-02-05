@@ -28,6 +28,7 @@ const CustomBottomSheetModalContentWrapper = ({ children }) => {
 const CustomBottomSheetModal = forwardRef(({ children, header, ...props }, ref) => {
   const { colors } = useTheme();
   const backgroundColor = useColorModeValue('white', colors.gray[900])
+  const handleColor = useColorModeValue(colors.gray[400], colors.gray[500])
   const insets = useSafeAreaInsets();
 
   const snapPoints = useMemo(() => ['10%', '40%', '100%'], []);
@@ -52,7 +53,7 @@ const CustomBottomSheetModal = forwardRef(({ children, header, ...props }, ref) 
         backgroundColor: backgroundColor
       }}
       handleIndicatorStyle={{
-        backgroundColor: colors.gray[500]
+        backgroundColor: handleColor
       }}
       {...props}
     >

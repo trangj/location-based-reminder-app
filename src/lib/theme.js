@@ -61,11 +61,17 @@ export const theme = extendTheme({
           const style = props.theme.components["Input"].variants.filled(props);
           return {
             ...style,
-            "bg": "gray.100",
-            "borderColor": "gray.100",
+            bg: "gray.100",
+            borderColor: "gray.100",
+            _icon: {
+              color: 'gray.500'
+            },
             _dark: {
-              "bg": "gray.800",
-              "borderColor": "gray.800",
+              bg: "gray.800",
+              borderColor: "gray.800",
+              _icon: {
+                color: 'gray.400'
+              }
             }
           }
         }
@@ -95,6 +101,14 @@ export const theme = extendTheme({
         bg: 'gray.100',
         _dark: {
           bg: 'gray.800'
+        }
+      }
+    },
+    Icon: {
+      baseStyle: {
+        color: 'gray.500',
+        _dark: {
+          color: 'gray.400'
         }
       }
     },
