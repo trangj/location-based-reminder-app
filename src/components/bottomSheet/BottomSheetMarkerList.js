@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
-import { Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast, HStack, CloseIcon, useColorModeValue } from 'native-base'
-import React, { forwardRef } from 'react'
+import { Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast, HStack, CloseIcon, useColorModeValue, Button, useTheme } from 'native-base'
+import React, { forwardRef, useEffect } from 'react'
 import { Alert } from 'react-native'
 import { useMarkerStore } from '../../stores/markerStore'
 import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal'
@@ -15,6 +15,8 @@ import { useState } from 'react'
 import { useGroupStore } from '../../stores/groupStore'
 import { Keyboard } from 'react-native'
 import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
+import { Platform } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler';
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -30,16 +32,20 @@ const BottomSheetMarkerList = forwardRef((
 
   const toast = useToast()
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
+  const { colors, space } = useTheme();
   const color = useColorModeValue('gray.500', 'gray.400')
+  const bg = useColorModeValue(colors.white, colors.gray[900])
   
   const markers = useMarkerStore(state => state.markers);
   const fetchMarkers = useMarkerStore(state => state.fetchMarkers);
+  const pinMarker = useMarkerStore(state => state.pinMarker);
   const group = useGroupStore(state => state.group)
   const loading = useMarkerStore(state => state.loading);
   const deleteMarker = useMarkerStore(state => state.deleteMarker);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searchView, setSearchView] = useState(false);
+  const [order, setOrder] = useState({ query: "name" });
 
   async function handleDeleteMarker(markerId) {
     try {
@@ -51,9 +57,9 @@ const BottomSheetMarkerList = forwardRef((
   }
 
   function handlePress(markerId) {
-    const options = ['View Reminders', 'Delete', 'Cancel'];
-    const destructiveButtonIndex = 1;
-    const cancelButtonIndex = 2;
+    const options = ['View Reminders', 'Pin Marker', 'Delete Marker', 'Cancel'];
+    const destructiveButtonIndex = 2;
+    const cancelButtonIndex = 3;
 
     showCustomActionSheetWithOptions({
       options,
@@ -64,6 +70,9 @@ const BottomSheetMarkerList = forwardRef((
         case 0:
           setCurrentMarkerId(markerId)
           bottomSheetReminderListRef.current.present()
+          break;
+        case 1:
+          pinMarker(markerId);
           break;
         case destructiveButtonIndex:
           Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
@@ -83,6 +92,16 @@ const BottomSheetMarkerList = forwardRef((
           // Canceled
       }});
   }
+
+  const handleOrder = ({ query = undefined, options = undefined}) => {
+    fetchMarkers(group.id, query, options)
+    setOrder({ query, options })
+  }
+
+  //reset query when group changes
+  useEffect(() => {
+    setOrder({ query: "name" })
+  }, [group])
 
   return (
     <CustomBottomSheetModal 
@@ -106,7 +125,7 @@ const BottomSheetMarkerList = forwardRef((
             value={searchQuery}
             onFocus={() => setSearchView(true)}
           />
-          {searchView ? (
+          {searchView && (
             <IconButton 
               variant="header"
               icon={<CloseIcon size="sm" />}
@@ -117,18 +136,6 @@ const BottomSheetMarkerList = forwardRef((
                 Keyboard.dismiss();
               }}
             />
-          ) : (
-            <>
-              <IconButton 
-                variant="header"
-                icon={<Icon as={Ionicons} name="refresh" size="sm" />}
-                onPress={() => fetchMarkers(group.id)}
-              />
-              <IconButton 
-                variant="header"
-                icon={<Icon as={Ionicons} name="swap-vertical" size="sm" />}
-              />
-            </>
           )}
         </HStack>
       }
@@ -151,6 +158,48 @@ const BottomSheetMarkerList = forwardRef((
           keyExtractor={(marker) => marker.id}
           ItemSeparatorComponent={() => (<Divider />)}
           ListEmptyComponent={loading ? ListSkeleton : EmptyMarkerList}
+          ListHeaderComponent={
+            <ScrollView 
+              horizontal 
+              contentInset={{ left: 12, right: 12 }}
+              contentOffset={{ x: -12 }}
+              contentContainerStyle={{ paddingHorizontal: Platform.OS === 'android' ? 12 : undefined }}
+              showsHorizontalScrollIndicator={false}
+              style={{ paddingBottom: space[2], backgroundColor: bg }}
+            >
+              <Button 
+                variant={order.query === "name" ? "headerActive" : "header"}
+                size="sm"
+                onPress={() => handleOrder({ query: "name" })}
+              >
+                Alphabetical
+              </Button>
+              <Button 
+                variant={order.query === "pinned" ? "headerActive" : "header"}
+                size="sm"
+                ml="2"
+                onPress={() => handleOrder({ query: "pinned", options: { ascending: false }})}
+              >
+                Pinned
+              </Button>
+              <Button 
+                variant={order.query === "created_at" ? "headerActive" : "header"}
+                size="sm"
+                ml="2"
+                onPress={() => handleOrder({ query: "created_at", options: { ascending: false }})}
+              >
+                Most Recent
+              </Button>
+              <Button 
+                variant={order.query === "number_of_reminders" ? "headerActive" : "header"}
+                size="sm"
+                ml="2"
+                onPress={() => handleOrder({ query: "number_of_reminders", options: { ascending: false }})}
+              >
+                Most Reminders
+              </Button>
+            </ScrollView>
+          }
           renderItem={({item}) => (
             <ListItem
               onPress={() => 

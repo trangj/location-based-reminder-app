@@ -55,6 +55,18 @@ const CustomBottomSheetModal = forwardRef(({ children, header, ...props }, ref) 
       handleIndicatorStyle={{
         backgroundColor: handleColor
       }}
+      handleStyle={{
+        paddingVertical: 8
+      }}
+      style={{
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+      }}
       {...props}
     >
       {header}

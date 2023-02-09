@@ -20,6 +20,58 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         rounded: 'lg'
+      },
+      variants: {
+        header: {
+          rounded: 'full',
+          bg: 'gray.100',
+          _dark: {
+            bg: 'gray.800'
+          },
+          _pressed: {
+            bg: 'gray.200',
+            _dark: {
+              bg: 'gray.700'
+            }
+          },
+          _icon: {
+            color: 'gray.500',
+            _dark: {
+              color: 'gray.400'
+            }
+          },
+          _text: {
+            color: 'gray.500',
+            _dark: {
+              color: 'gray.400'
+            }
+          },
+        },
+        headerActive: {
+          rounded: 'full',
+          bg: 'gray.900',
+          _dark: {
+            bg: 'gray.100'
+          },
+          _pressed: {
+            bg: 'gray.800',
+            _dark: {
+              bg: 'gray.200'
+            }
+          },
+          _icon: {
+            color: 'white',
+            _dark: {
+              color: 'black'
+            }
+          },
+          _text: {
+            color: 'white',
+            _dark: {
+              color: 'black'
+            }
+          },
+        },
       }
     },
     IconButton: {

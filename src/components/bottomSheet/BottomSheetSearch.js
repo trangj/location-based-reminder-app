@@ -1,4 +1,3 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import { Divider, Text, VStack } from 'native-base'
 import React, { forwardRef, useCallback } from 'react'
 import { useState } from 'react'
@@ -8,6 +7,7 @@ import * as Location from 'expo-location'
 import EmptySearch from '../placeholders/EmptySearch'
 import { useEffect } from 'react'
 import ListSkeleton from '../placeholders/ListSkeleton'
+import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 
 const BottomSheetSearch = forwardRef((
   {
@@ -51,7 +51,7 @@ const BottomSheetSearch = forwardRef((
   }, [searchQuery])
 
   return (
-    <BottomSheetFlatList
+    <BottomSheetFlatListWrapper
       ListEmptyComponent={loading ? ListSkeleton : EmptySearch}
       data={results}
       keyExtractor={(result) => result.place_id}
