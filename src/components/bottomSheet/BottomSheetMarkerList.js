@@ -199,6 +199,14 @@ const BottomSheetMarkerList = forwardRef((
               >
                 Most Reminders
               </Button>
+              <Button 
+                variant={order.query === "updated_at" ? "headerActive" : "header"}
+                size="sm"
+                ml="2"
+                onPress={() => handleOrder({ query: "updated_at", options: { ascending: false }})}
+              >
+                Recently Updated
+              </Button>
             </ScrollView>
           }
           renderItem={({item}) => (
