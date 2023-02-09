@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { AddIcon, Button, Checkbox, CloseIcon, Divider, Icon, IconButton, Text, useColorModeValue, useTheme, useToast, VStack } from 'native-base'
+import { AddIcon, Button, Checkbox, CloseIcon, Divider, IconButton, Text, useColorModeValue, useTheme, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useEffect } from 'react'
 import { useRemindersStore } from '../../stores/reminderStore'
@@ -8,11 +8,11 @@ import ListItem from '../../ui/ListItem'
 import BottomSheetHeader from './BottomSheetHeader'
 import EmptyReminderList from '../placeholders/EmptyReminderList'
 import ListSkeleton from '../placeholders/ListSkeleton'
-import Ionicons from '@expo/vector-icons/Ionicons'
 import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 import { useState } from 'react'
 import { Platform } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
+import { useCustomToast } from '../../hooks/useCustomToast'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -23,7 +23,7 @@ const BottomSheetMarkerList = forwardRef((
     bottomSheetAddReminderRef
   }) => {
 
-  const toast = useToast();
+  const toast = useCustomToast();
   const { colors, space } = useTheme();
   const color = useColorModeValue('gray.500', 'gray.400')
   const bg = useColorModeValue(colors.white, colors.gray[900])

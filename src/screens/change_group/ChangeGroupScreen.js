@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
-import { FlatList, useToast, Text, Divider, VStack, Button, IconButton, Icon, useColorModeValue } from 'native-base';
+import { FlatList, Text, Divider, VStack, Button, IconButton, Icon, useColorModeValue } from 'native-base';
 import { useEffect, useState } from 'react';
 import EmptyChangeGroupList from '../../components/placeholders/EmptyChangeGroupList';
 import { supabase } from '../../lib/supabase';
@@ -12,6 +12,7 @@ import { Alert } from 'react-native';
 import CustomRefreshControl from '../../ui/CustomRefreshControl';
 import ListSkeleton from '../../components/placeholders/ListSkeleton';
 import { useCustomActionSheet } from '../../hooks/useCustomActionSheet'
+import { useCustomToast } from '../../hooks/useCustomToast';
 
 function ChangeGroupScreen() {
 
@@ -23,7 +24,7 @@ function ChangeGroupScreen() {
   const currentGroup = useGroupStore(state => state.group);
 
   const navigation = useNavigation();
-  const toast = useToast()
+  const toast = useCustomToast()
   const color = useColorModeValue('gray.500', 'gray.400')
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   

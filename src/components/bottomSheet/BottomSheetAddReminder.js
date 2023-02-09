@@ -1,14 +1,15 @@
-import { Button, CloseIcon, FormControl, IconButton, useToast, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, IconButton, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper'
 import { useRemindersStore } from '../../stores/reminderStore';
 import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal';
 import BottomSheetHeader from './BottomSheetHeader';
+import { useCustomToast } from '../../hooks/useCustomToast';
 
 const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderRef }) => {
   const addReminder = useRemindersStore(state => state.addReminder);
-  const toast = useToast();
+  const toast = useCustomToast();
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { Divider, IconButton, SearchIcon, Text, VStack, Icon, useToast, HStack, CloseIcon, useColorModeValue, Button, useTheme } from 'native-base'
+import { Divider, IconButton, SearchIcon, Text, VStack, Icon, HStack, CloseIcon, useColorModeValue, Button, useTheme } from 'native-base'
 import React, { forwardRef, useEffect } from 'react'
 import { Alert } from 'react-native'
 import { useMarkerStore } from '../../stores/markerStore'
@@ -17,6 +17,7 @@ import { Keyboard } from 'react-native'
 import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 import { Platform } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
+import { useCustomToast } from '../../hooks/useCustomToast'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -30,7 +31,7 @@ const BottomSheetMarkerList = forwardRef((
     mapRef, 
   }) => {
 
-  const toast = useToast()
+  const toast = useCustomToast()
   const { showCustomActionSheetWithOptions } = useCustomActionSheet();
   const { colors, space } = useTheme();
   const color = useColorModeValue('gray.500', 'gray.400')

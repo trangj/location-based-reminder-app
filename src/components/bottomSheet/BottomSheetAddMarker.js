@@ -1,4 +1,4 @@
-import { Button, CloseIcon, FormControl, IconButton, useToast, VStack } from 'native-base'
+import { Button, CloseIcon, FormControl, IconButton, VStack } from 'native-base'
 import React, { forwardRef } from 'react'
 import { useMarkerStore } from '../../stores/markerStore'
 import { useGroupStore } from '../../stores/groupStore'
@@ -6,6 +6,7 @@ import { Controller, useForm } from 'react-hook-form'
 import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper'
 import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal'
 import BottomSheetHeader from './BottomSheetHeader'
+import { useCustomToast } from '../../hooks/useCustomToast'
 
 const BottomSheetAddMarker = forwardRef((
   {
@@ -17,7 +18,7 @@ const BottomSheetAddMarker = forwardRef((
   }) => {
 
   // toast
-  const toast = useToast()
+  const toast = useCustomToast()
 
   // stores
   const addMarker = useMarkerStore(state => state.addMarker)
