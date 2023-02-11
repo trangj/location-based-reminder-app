@@ -5,10 +5,13 @@ import { Platform, ScrollView } from 'react-native';
 import { Alert } from 'react-native';
 import { useSessionStore } from '../../stores/sessionStore';
 import { supabase } from '../../lib/supabase'
+import { useCustomToast } from '../../hooks/useCustomToast';
+
 
 
 function ChangePasswordScreen() {
   const navigation = useNavigation()
+  const toast = useCustomToast()
   const user = useSessionStore(state => state.user)
 
   const { control, handleSubmit, formState: { errors }, getValues } = useForm({
@@ -23,11 +26,12 @@ function ChangePasswordScreen() {
     const { error } = await supabase.auth.updateUser({
       password: password,
     })
-
+    
     if (error) {
       Alert.alert(error.message)
     } else {
       navigation.navigate("DrawerNavigator")
+      toast.show({description: "Password has changed"})
     }
   }
 
