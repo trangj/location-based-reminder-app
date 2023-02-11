@@ -8,6 +8,7 @@ import EmptySearch from '../placeholders/EmptySearch'
 import { useEffect } from 'react'
 import ListSkeleton from '../placeholders/ListSkeleton'
 import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
+import * as Haptics from 'expo-haptics'
 
 const BottomSheetSearch = forwardRef((
   {
@@ -67,6 +68,7 @@ const BottomSheetSearch = forwardRef((
             })
           }
           onLongPress={() => {
+            Haptics.selectionAsync();
             mapRef.current.animateToRegion({
               latitude: item.geometry.location.lat,
               longitude: item.geometry.location.lng,

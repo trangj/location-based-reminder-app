@@ -13,6 +13,7 @@ import { useGroupStore } from '../../stores/groupStore';
 import { useNavigation } from '@react-navigation/native';
 import { useColorModeValue } from 'native-base';
 import { darkModeMapStyle } from '../../lib/theme';
+import * as Haptics from 'expo-haptics'
 
 function MainScreen() {
   const userInterfaceStyle = useColorModeValue('light', 'dark')
@@ -42,6 +43,7 @@ function MainScreen() {
     // prevent users from adding markers if they are not in a group
     if (!group) return;
 
+    Haptics.selectionAsync();
     mapRef.current.animateToRegion({
       latitude: nativeEvent.coordinate.latitude,
       longitude: nativeEvent.coordinate.longitude,

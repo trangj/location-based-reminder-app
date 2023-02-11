@@ -7,6 +7,7 @@ import BottomSheetInputWrapper from '../../ui/BottomSheetInputWrapper'
 import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal'
 import BottomSheetHeader from './BottomSheetHeader'
 import { useCustomToast } from '../../hooks/useCustomToast'
+import * as Haptics from 'expo-haptics'
 
 const BottomSheetAddMarker = forwardRef((
   {
@@ -40,9 +41,11 @@ const BottomSheetAddMarker = forwardRef((
         name: markerName
       });
       reset();
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
       toast.show({description: "Successfully added marker"})
       dismissAddMarkerSheet();
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
       toast.show({description: error.message})
     }
   }

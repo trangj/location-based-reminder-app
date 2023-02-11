@@ -27,7 +27,7 @@ export const useMarkerStore = create((set, get) => ({
   },
   pinMarker: async (markerId) => {
     const { data } = await supabase.from('marker').select('*').match({ id: markerId }).single();
-    const { error } = await supabase.from('marker').update({ pinned: !data.pinned }).match({ id: markerId }).select().single();
+    const { data: updatedMarker, error } = await supabase.from('marker').update({ pinned: !data.pinned }).match({ id: markerId }).select().single();
     if (error) throw Error("Failed to pin marker");
     set({
       markers: get().markers.map(marker => {
@@ -37,5 +37,6 @@ export const useMarkerStore = create((set, get) => ({
         return marker;
       })
     })
+    return updatedMarker;
   }
 }))

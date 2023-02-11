@@ -16,7 +16,8 @@ export function useCustomToast() {
         color,
         px: '3',
         fontSize: 'sm'
-      }
+      },
+      duration: 3000
     })
   }
   

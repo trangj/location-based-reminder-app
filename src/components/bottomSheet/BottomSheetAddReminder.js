@@ -6,6 +6,7 @@ import { useRemindersStore } from '../../stores/reminderStore';
 import CustomBottomSheetModal from '../../ui/CustomBottomSheetModal';
 import BottomSheetHeader from './BottomSheetHeader';
 import { useCustomToast } from '../../hooks/useCustomToast';
+import * as Haptics from 'expo-haptics'
 
 const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderRef }) => {
   const addReminder = useRemindersStore(state => state.addReminder);
@@ -21,10 +22,12 @@ const BottomSheetAddMarker = forwardRef(({ markerId }, { bottomSheetAddReminderR
     if (!markerId) return;
     try {
       await addReminder(markerId, { description })
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
       toast.show({description: "Successfully added reminder"})
       reset();
       bottomSheetAddReminderRef.current.dismiss()
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
       toast.show({description: error.message})
     }
   }

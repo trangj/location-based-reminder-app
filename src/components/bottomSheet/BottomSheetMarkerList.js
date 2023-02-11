@@ -18,6 +18,7 @@ import BottomSheetFlatListWrapper from './BottomSheetFlatListWrapper'
 import { Platform } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { useCustomToast } from '../../hooks/useCustomToast'
+import * as Haptics from 'expo-haptics'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -52,13 +53,27 @@ const BottomSheetMarkerList = forwardRef((
     try {
       await deleteMarker(markerId)
       toast.show({description: "Successfuly deleted marker"})
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
     } catch (error) {
       toast.show({description: error.message})
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
     }
   }
 
-  function handlePress(markerId) {
-    const options = ['View Reminders', 'Pin Marker', 'Delete Marker', 'Cancel'];
+  async function handlePinMarker(markerId) {
+    try {
+      const updatedMarker = await pinMarker(markerId)
+      const pinState = updatedMarker.pinned ? 'pinned' : 'unpinned'
+      toast.show({description: `Successfuly ${pinState} marker`})
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+    } catch (error) {
+      toast.show({description: error.message})
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+    }
+  }
+
+  function handlePress(markerId, pinState) {
+    const options = ['View Reminders', pinState ? 'Unpin Marker' : 'Pin Marker', 'Delete Marker', 'Cancel'];
     const destructiveButtonIndex = 2;
     const cancelButtonIndex = 3;
 
@@ -73,7 +88,7 @@ const BottomSheetMarkerList = forwardRef((
           bottomSheetReminderListRef.current.present()
           break;
         case 1:
-          pinMarker(markerId);
+          handlePinMarker(markerId);
           break;
         case destructiveButtonIndex:
           Alert.alert("Delete marker?", "Are you sure you want to delete this marker?", [
@@ -95,6 +110,7 @@ const BottomSheetMarkerList = forwardRef((
   }
 
   const handleOrder = ({ query = undefined, options = undefined}) => {
+    Haptics.selectionAsync();
     fetchMarkers(group.id, query, options)
     setOrder({ query, options })
   }
@@ -189,7 +205,7 @@ const BottomSheetMarkerList = forwardRef((
                 ml="2"
                 onPress={() => handleOrder({ query: "created_at", options: { ascending: false }})}
               >
-                Most Recent
+                Recently Added
               </Button>
               <Button 
                 variant={order.query === "number_of_reminders" ? "headerActive" : "header"}
@@ -220,6 +236,7 @@ const BottomSheetMarkerList = forwardRef((
                 })
               }
               onLongPress={() => {
+                Haptics.selectionAsync();
                 setCurrentMarkerId(item.id)
                 bottomSheetReminderListRef.current.present()
               }}
@@ -231,9 +248,10 @@ const BottomSheetMarkerList = forwardRef((
                 </Text>
                 <Text variant="alt">
                   {dayjs(item.created_at).format('DD-MM-YYYY')} {'\u2022'} {item.number_of_reminders} reminder{item.number_of_reminders === 1 ? '' : 's'}
+                  {item.pinned && (' \u2022 Pinned')}
                 </Text>
               </VStack>
-              <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" color={color} />} colorScheme="gray" onPress={() => handlePress(item.id)} />
+              <IconButton icon={<Icon as={Ionicons} name="ellipsis-horizontal" size="md" color={color} />} colorScheme="gray" onPress={() => handlePress(item.id, item.pinned)} />
             </ListItem>
           )}
         />

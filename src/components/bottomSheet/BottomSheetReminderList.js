@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { Platform } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { useCustomToast } from '../../hooks/useCustomToast'
+import * as Haptics from 'expo-haptics'
 
 const BottomSheetMarkerList = forwardRef((
   {
@@ -47,22 +48,26 @@ const BottomSheetMarkerList = forwardRef((
   async function handleChangeReminderStatus(id, checked) {
     try {
       await changeReminderStatus(id, checked)
+      Haptics.selectionAsync();
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       toast.show({description: error.message})
-
     }
   } 
 
   async function handleDeleteReminder(id) {
     try {
       await deleteReminder(id)
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       toast.show({description: "Successfully deleted reminder"})
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       toast.show({description: error.message})
     }
   }
 
   const handleOrder = ({query = undefined, options = undefined}) => {
+    Haptics.selectionAsync()
     fetchReminders(markerId, query, options)
     setOrder({ query, options })
   }
@@ -125,7 +130,7 @@ const BottomSheetMarkerList = forwardRef((
               ml="2"
               onPress={() => handleOrder({ query: "created_at", options: { ascending: false }})}
             >
-              Most Recent
+              Recently Added
             </Button>
             <Button 
               variant={order.query === "updated_at" ? "headerActive" : "header"}

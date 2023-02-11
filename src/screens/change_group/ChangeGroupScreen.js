@@ -13,6 +13,7 @@ import CustomRefreshControl from '../../ui/CustomRefreshControl';
 import ListSkeleton from '../../components/placeholders/ListSkeleton';
 import { useCustomActionSheet } from '../../hooks/useCustomActionSheet'
 import { useCustomToast } from '../../hooks/useCustomToast';
+import * as Haptics from 'expo-haptics'
 
 function ChangeGroupScreen() {
 
@@ -49,6 +50,7 @@ function ChangeGroupScreen() {
 
   async function handleGroupChange(group) {
     if (currentGroup && currentGroup.id === group.id) return;
+    Haptics.selectionAsync();
     setGroup(group);
     toast.show({description: "Successfully changed group"})
   }
