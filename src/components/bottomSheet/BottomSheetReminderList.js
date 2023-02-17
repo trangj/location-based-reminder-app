@@ -98,6 +98,8 @@ const BottomSheetMarkerList = forwardRef((
       <BottomSheetFlatListWrapper
         data={reminders}
         ListEmptyComponent={loading ? ListSkeleton : EmptyReminderList}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll
         keyExtractor={(reminder) => reminder.id}
         ItemSeparatorComponent={() => (<Divider />)}
         ListHeaderComponent={

@@ -6,8 +6,6 @@ const BottomSheetFlatListWrapper = ({ ...props }) => {
   const indicatorStyle = useColorModeValue('black', 'white')
   return (
     <BottomSheetFlatList
-      stickyHeaderIndices={[0]}
-      stickyHeaderHiddenOnScroll
       indicatorStyle={indicatorStyle}
       {...props}
     />

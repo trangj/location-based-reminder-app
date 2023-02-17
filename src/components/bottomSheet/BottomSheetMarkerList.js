@@ -172,6 +172,8 @@ const BottomSheetMarkerList = forwardRef((
       ) : (
         <BottomSheetFlatListWrapper
           data={markers}
+          stickyHeaderIndices={[0]}
+          stickyHeaderHiddenOnScroll
           keyExtractor={(marker) => marker.id}
           ItemSeparatorComponent={() => (<Divider />)}
           ListEmptyComponent={loading ? ListSkeleton : EmptyMarkerList}
