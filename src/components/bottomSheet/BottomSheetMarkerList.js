@@ -110,9 +110,11 @@ const BottomSheetMarkerList = forwardRef((
   }
 
   const handleOrder = ({ query = undefined, options = undefined}) => {
-    Haptics.selectionAsync();
-    fetchMarkers(group.id, query, options)
-    setOrder({ query, options })
+    if (group) {
+      Haptics.selectionAsync();
+      fetchMarkers(group.id, query, options)
+      setOrder({ query, options })
+    }
   }
 
   //reset query when group changes
